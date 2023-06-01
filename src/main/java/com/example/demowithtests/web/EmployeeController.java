@@ -34,16 +34,13 @@ public class EmployeeController {
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Employee getEmployeeById(@PathVariable Integer id) {
-
-        Employee employee = service.getById(id);
-        return employee;
+        return service.getById(id);
     }
 
     //Обновление юзера
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Employee refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-
         return service.updateById(id, employee);
     }
 
@@ -55,7 +52,7 @@ public class EmployeeController {
     }
 
     //Удаление всех юзеров
-    @DeleteMapping("/users")
+    @PatchMapping("/users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeAllUsers() {
         service.removeAll();
