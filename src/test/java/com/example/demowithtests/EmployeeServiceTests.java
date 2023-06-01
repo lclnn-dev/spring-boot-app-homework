@@ -1,9 +1,9 @@
 package com.example.demowithtests;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.repository.Repository;
-import com.example.demowithtests.service.Service;
-import com.example.demowithtests.service.ServiceBean;
+import com.example.demowithtests.repository.EmployeeRepository;
+import com.example.demowithtests.service.EmployeeServiceBean;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,13 +20,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServiceTests {
+public class EmployeeServiceTests {
 
     @Mock
-    private Repository repository;
+    private EmployeeRepository repository;
 
     @InjectMocks
-    private ServiceBean service;
+    private EmployeeServiceBean service;
 
     @Test
     public void whenSaveEmployee_shouldReturnEmployee() {

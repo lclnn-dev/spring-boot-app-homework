@@ -1,7 +1,7 @@
 package com.example.demowithtests.web;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.service.Service;
+import com.example.demowithtests.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,9 +12,9 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-public class Controller {
+public class EmployeeController {
 
-    private final Service service;
+    private final EmployeeService service;
 
     //Операция сохранения юзера в базу данных
     @PostMapping("/users")

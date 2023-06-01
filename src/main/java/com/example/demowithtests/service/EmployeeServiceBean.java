@@ -1,7 +1,7 @@
 package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.repository.Repository;
+import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.util.ResourceNotFoundException;
 import com.example.demowithtests.util.ResourceWasDeletedException;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,9 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 @org.springframework.stereotype.Service
-public class ServiceBean implements Service {
+public class EmployeeServiceBean implements EmployeeService {
 
-    private final Repository repository;
+    private final EmployeeRepository repository;
 
     @Override
     public Employee create(Employee employee) {

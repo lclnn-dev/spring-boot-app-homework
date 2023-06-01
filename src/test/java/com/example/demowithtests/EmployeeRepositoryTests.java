@@ -1,7 +1,7 @@
 package com.example.demowithtests;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.repository.Repository;
+import com.example.demowithtests.repository.EmployeeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -16,10 +16,10 @@ import java.util.Optional;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class RepositoryTests {
+public class EmployeeRepositoryTests {
 
     @Autowired
-    private Repository repository;
+    private EmployeeRepository repository;
 
     @Test
     @Order(1)
