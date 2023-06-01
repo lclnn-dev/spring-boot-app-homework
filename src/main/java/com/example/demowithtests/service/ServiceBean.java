@@ -4,10 +4,11 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.Repository;
 import com.example.demowithtests.util.ResourceNotFoundException;
 import com.example.demowithtests.util.ResourceWasDeletedException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 @AllArgsConstructor
