@@ -1,28 +1,41 @@
 package com.example.demowithtests.util.exception;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
 public class ErrorDetails {
-    private Date timestamp;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
+
+    private HttpStatus status;
+    private String path;
     private String message;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String details;
 
-    public ErrorDetails(Date timestamp, String message, String details) {
-        super();
-        this.timestamp = timestamp;
-        this.message = message;
-        this.details = details;
+
+    private ErrorDetails() {
+        timestamp = LocalDateTime.now();
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public ErrorDetails(HttpStatus status) {
+        this();
+        this.status = status;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public String getDetails() {
-        return details;
+    public ErrorDetails(HttpStatus status, Throwable ex) {
+        this();
+        this.status = status;
+        this.message = "Unexpected error";
+        this.details = ex.getLocalizedMessage();
     }
 }
