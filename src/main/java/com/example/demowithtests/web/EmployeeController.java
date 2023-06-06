@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,6 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final EmployeeConverter converter;
 
-    //Операция сохранения юзера в базу данных
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "This is endpoint to add a new employee.", description = "Create request to add a new employee.", tags = {"Employee"})
@@ -43,21 +43,11 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
             @ApiResponse(responseCode = "409", description = "Employee already exists")})
     public EmployeeDto saveEmployee(@RequestBody @Valid EmployeeDto requestForSave) {
+        Employee employee = converter.getMapperFacade().map(requestForSave, Employee.class);
 
-        var employee = converter.getMapperFacade().map(requestForSave, Employee.class);
-        var dto = converter.toDto(employeeService.create(employee));
-
-        return dto;
-    }
-    @PostMapping("/usersS")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void saveEmployee1(@RequestBody Employee employee) {
-
-        employeeService.create(employee);
-
+        return converter.toDto(employeeService.create(employee));
     }
 
-    //Получение списка юзеров
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<Employee> getAllUsers() {
@@ -73,40 +63,48 @@ public class EmployeeController {
         return employeeService.getAllWithPagination(paging);
     }
 
-    //Получения юзера по id
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "This is endpoint returned a employee by his id.", description = "Create request to read a employee by id", tags = {"Employee"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "OK. pam pam param."),
+            @ApiResponse(responseCode = "201", description = "OK. The employee founded."),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
-            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found.")})
     public EmployeeReadDto getEmployeeById(@PathVariable Integer id) {
         log.debug("getEmployeeById() EmployeeController - start: id = {}", id);
-        var employee = employeeService.getById(id);
+        Employee employee = employeeService.getById(id);
+
         log.debug("getById() EmployeeController - to dto start: id = {}", id);
         var dto = converter.toReadDto(employee);
+
         log.debug("getEmployeeById() EmployeeController - end: name = {}", dto.name);
         return dto;
     }
 
-    //Обновление юзера
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Employee refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-
         return employeeService.updateById(id, employee);
     }
 
-    //Удаление по id
     @PatchMapping("/users/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeSoftEmployeeById(@PathVariable Integer id) {
+        employeeService.removeSoftById(id);
+    }
+
+    @PatchMapping("/users/re/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void recoverEmployeeById(@PathVariable Integer id) {
+        employeeService.recoverById(id);
+    }
+
+    @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEmployeeById(@PathVariable Integer id) {
         employeeService.removeById(id);
     }
 
-    //Удаление всех юзеров
     @DeleteMapping("/users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeAllUsers() {
@@ -125,6 +123,12 @@ public class EmployeeController {
         return employeeService.findByCountryContaining(country, page, size, sortList, sortOrder.toString());
     }
 
+    @GetMapping("/users/countryBy")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> getByCountry(@RequestParam String country) {
+        return employeeService.findByCountry(country);
+    }
+
     @GetMapping("/users/c")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getAllUsersC() {
@@ -141,11 +145,5 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public Optional<String> getAllUsersSo() {
         return employeeService.findEmails();
-    }
-
-    @GetMapping("/users/countryBy")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getByCountry(@RequestParam(required = true) String country) {
-        return employeeService.filterByCountry(country);
     }
 }
