@@ -13,23 +13,20 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-    //@Query(value = "SELECT * FROM users", nativeQuery = true)
-
-    @Query(value = "select e from Employee e where e.country =?1")
     List<Employee> findByCountry(String country);
 
-    @Query(value = "select * from users join addresses on users.id = addresses.employee_id " +
-            "where users.gender = :gender and addresses.country = :country", nativeQuery = true)
+    @Query(value = "SELECT * FROM users JOIN addresses ON users.id = addresses.employee_id " +
+            "WHERE users.gender = :gender AND addresses.country = :country", nativeQuery = true)
     List<Employee> findByGender(String gender, String country);
 
-    Employee findByName(String name);
+    Employee findFirstByName(String name);
 
     Employee findEmployeeByEmailNotNull();
 
     @NotNull
     Page<Employee> findAll(Pageable pageable);
 
-    Page<Employee> findByName(String name, Pageable pageable);
+    Page<Employee> findFirstByName(String name, Pageable pageable);
 
     Page<Employee> findByCountryContaining(String country, Pageable pageable);
 

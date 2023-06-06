@@ -1,6 +1,6 @@
 package com.example.demowithtests.dto;
 
-import lombok.experimental.Accessors;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.Instant;
 import java.util.Date;
@@ -9,15 +9,11 @@ import java.util.Date;
 public class AddressDto {
 
     public Long id;
-
     public Boolean addressHasActive = Boolean.TRUE;
-
     public String country;
-
     public String city;
-
     public String street;
 
-    //todo: dfhgjkdfhg Jira - 5544
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     public Date date = Date.from(Instant.now());
 }

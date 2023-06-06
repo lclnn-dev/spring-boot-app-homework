@@ -107,7 +107,7 @@ public class RepositoryTests {
 
         Employee employeeNull = null;
 
-        var optionalEmployee = Optional.ofNullable(employeeRepository.findByName("Martin"));
+        var optionalEmployee = Optional.ofNullable(employeeRepository.findFirstByName("Martin"));
 
         if (optionalEmployee.isPresent()) {
             employeeNull = optionalEmployee.orElseThrow();

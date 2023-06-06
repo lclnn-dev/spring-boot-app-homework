@@ -15,23 +15,20 @@ public class EmployeeDto {
     public Integer id;
 
     @NotNull
-    @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long")
-    @Schema(description = "Name of an employee.", example = "Billy", required = true)
+    @Size(min = 2, max = 32, message = "Name must be between 2 and 32 characters long.")
+    @Schema(description = "Name of an employee.", example = "Billy", requiredMode = Schema.RequiredMode.REQUIRED)
     public String name;
 
-    @Schema(description = "Name of the country.", example = "England", required = true)
+    @Schema(description = "Name of the country.", example = "England", requiredMode = Schema.RequiredMode.REQUIRED)
     public String country;
 
     @Email
     @NotNull
-    @Schema(description = "Email address of an employee.", example = "billys@mail.com", required = true)
+    @Schema(description = "Email address of an employee.", example = "billys@mail.com", requiredMode = Schema.RequiredMode.REQUIRED)
     public String email;
 
     public Instant startDate = Instant.now();
-
-    //public Set<AddressDto> addresses = new HashSet<>();
-
     public Gender gender;
-
     public Set<AddressDto> addresses = new HashSet<>();
+    public boolean isDeleted;
 }

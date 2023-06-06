@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Entity
+@Table(name = "addresses")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "addresses")
 @Builder
 public class Address {
 
@@ -39,4 +39,3 @@ public class Address {
     @Column(name = "street")
     private String street;
 }
-
