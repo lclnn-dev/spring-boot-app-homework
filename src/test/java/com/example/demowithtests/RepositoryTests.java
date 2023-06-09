@@ -90,7 +90,7 @@ public class RepositoryTests {
     @DisplayName("Find employee by gender test")
     public void findByGenderTest() {
 
-        var employees = employeeRepository.findByGender(Gender.M.toString(), "UK");
+        var employees = employeeRepository.findAllByGenderAndAddressCountry(Gender.M.toString(), "UK");
 
         assertThat(employees.get(0).getGender()).isEqualTo(Gender.M);
     }
@@ -107,7 +107,7 @@ public class RepositoryTests {
 
         Employee employeeNull = null;
 
-        var optionalEmployee = Optional.ofNullable(employeeRepository.findFirstByName("Martin"));
+        var optionalEmployee = employeeRepository.findFirstByName("Martin");
 
         if (optionalEmployee.isPresent()) {
             employeeNull = optionalEmployee.orElseThrow();
