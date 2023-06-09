@@ -29,8 +29,6 @@ public interface EmployeeService {
 
     void recoverById(Integer id);
 
-    //Page<Employee> findByCountryContaining(String country, Pageable pageable);
-
     /**
      * @param country   Filter for the country if required
      * @param page      number of the page returned
@@ -41,7 +39,11 @@ public interface EmployeeService {
      */
     Page<Employee> findByCountryContaining(String country, int page, int size, List<String> sortList, String sortOrder);
 
-    List<Employee> findByCountry(String country);
+    List<Employee> findAllByCountry(String country);
+
+    List<Employee> findAllByEmailNull();
+
+    List<Employee> updateAllByCountryFirstCharLowerToUpper();
 
     /**
      * Get all the countries of all the employees.

@@ -9,25 +9,32 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-    List<Employee> findByCountry(String country);
+    List<Employee> findAllByCountry(String country);
 
     @Query(value = "SELECT * FROM users JOIN addresses ON users.id = addresses.employee_id " +
             "WHERE users.gender = :gender AND addresses.country = :country", nativeQuery = true)
-    List<Employee> findByGender(String gender, String country);
+    List<Employee> findAllByGenderAndAddressCountry(String gender, String country);
 
-    Employee findFirstByName(String name);
+    Optional<Employee> findFirstByName(String name);
 
     Employee findEmployeeByEmailNotNull();
+
+    List<Employee> findAllByEmailNull();
+
+    @Query(value = "SELECT * FROM users WHERE SUBSTRING(country, 1, 1) = LOWER(SUBSTRING(country, 1, 1))",
+            nativeQuery = true)
+    List<Employee> findAllByCountryStartsWithLowerCase();
 
     @NotNull
     Page<Employee> findAll(Pageable pageable);
 
-    Page<Employee> findFirstByName(String name, Pageable pageable);
+    Page<Employee> findAllByName(String name, Pageable pageable);
 
-    Page<Employee> findByCountryContaining(String country, Pageable pageable);
+    Page<Employee> findAllByCountryContaining(String country, Pageable pageable);
 
 }

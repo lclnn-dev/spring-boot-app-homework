@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -119,15 +120,15 @@ public class EmployeeServiceBean implements EmployeeService {
         employeeRepository.deleteAll();
     }
 
-    /*@Override
-    public Page<Employee> findByCountryContaining(String country, Pageable pageable) {
-        return employeeRepository.findByCountryContaining(country, pageable);
-    }*/
+    @Override
+    public List<Employee> findAllByCountry(String country) {
+        return employeeRepository.findAllByCountry(country);
+    }
 
     @Override
     public Page<Employee> findByCountryContaining(String country, int page, int size, List<String> sortList, String sortOrder) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(createSortOrder(sortList, sortOrder)));
-        Page<Employee> resultPage = employeeRepository.findByCountryContaining(country, pageable);
+        Page<Employee> resultPage = employeeRepository.findAllByCountryContaining(country, pageable);
 
         if (resultPage.getTotalElements() == 0) {
             throw new NoResultsFoundException("employees", "country", country);
@@ -148,6 +149,25 @@ public class EmployeeServiceBean implements EmployeeService {
             sorts.add(new Sort.Order(direction, sort));
         }
         return sorts;
+    }
+
+    @Override
+    public List<Employee> findAllByEmailNull() {
+        return employeeRepository.findAllByEmailNull();
+    }
+
+    @Override
+    public List<Employee> updateAllByCountryFirstCharLowerToUpper() {
+        var resultEmployees = employeeRepository.findAllByCountryStartsWithLowerCase();
+        log.debug("updateAllByCountryFirstCharLowerToUpper() - start");
+
+        if (!resultEmployees.isEmpty()) {
+            resultEmployees.forEach(e -> e.setCountry(StringUtils.capitalize(e.getCountry())));
+            employeeRepository.saveAll(resultEmployees);
+        }
+
+        log.debug("updateAllByCountryFirstCharLowerToUpper() - end");
+        return resultEmployees;
     }
 
     @Override
@@ -191,10 +211,5 @@ public class EmployeeServiceBean implements EmployeeService {
                 .orElse("error?");
 
         return Optional.ofNullable(opt);
-    }
-
-    @Override
-    public List<Employee> findByCountry(String country) {
-        return employeeRepository.findByCountry(country);
     }
 }
