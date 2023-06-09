@@ -44,6 +44,7 @@ public class ResourceExceptionHandler {
     protected ResponseEntity<Object> globalExceptionHandler(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.INTERNAL_SERVER_ERROR, ex);
         errorDetails.setMessage((String.format("%s : %s", ex.getClass().getSimpleName(), errorDetails.getMessage())));
+        errorDetails.setPath(request.getDescription(false));
 
         return buildErrorResponse(errorDetails);
     }
