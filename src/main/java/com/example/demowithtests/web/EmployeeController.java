@@ -1,10 +1,11 @@
 package com.example.demowithtests.web;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.EmployeeDto;
-import com.example.demowithtests.dto.EmployeeReadDto;
+import com.example.demowithtests.dto.request.EmployeeRequestDto;
+import com.example.demowithtests.dto.request.EmployeeUpdateRequestDto;
+import com.example.demowithtests.dto.response.EmployeeResponseDto;
 import com.example.demowithtests.service.EmployeeService;
-import com.example.demowithtests.util.config.EmployeeConverter;
+import com.example.demowithtests.util.mapper.EmployeeMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -41,35 +42,21 @@ import java.util.Optional;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    private final EmployeeConverter converter;
-
-    @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "This is endpoint to add a new employee.", description = "Create request to add a new employee.", tags = {"Employee"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
-            @ApiResponse(responseCode = "409", description = "Employee already exists")})
-    public EmployeeDto saveEmployee(@RequestBody @Valid EmployeeDto requestForSave) {
-        Employee employee = converter.getMapperFacade().map(requestForSave, Employee.class);
-
-        return converter.toDto(employeeService.create(employee));
-    }
+    private final EmployeeMapper employeeMapper;
 
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getAllUsers() {
-        return employeeService.getAll();
+    public List<EmployeeResponseDto> getAllUsers() {
+        List<Employee> employees = employeeService.getAll();
+        return employeeMapper.toEmployeeResponseList(employees);
     }
 
     @GetMapping("/users/p")
     @ResponseStatus(HttpStatus.OK)
-    public Page<Employee> getPage(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "5") int size
-    ) {
+    public Page<EmployeeResponseDto> getPage(@RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "5") int size) {
         Pageable paging = PageRequest.of(page, size);
-        return employeeService.getAllWithPagination(paging);
+        return employeeService.getAllWithPagination(paging).map(e -> employeeMapper.toEmployeeResponse(e));
     }
 
     @GetMapping("/users/{id}")
@@ -79,21 +66,37 @@ public class EmployeeController {
             @ApiResponse(responseCode = "201", description = "OK. The employee founded."),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found.")})
-    public EmployeeReadDto getEmployeeById(@PathVariable Integer id) {
+    public EmployeeResponseDto getEmployeeById(@PathVariable Integer id) {
         log.debug("getEmployeeById() EmployeeController - start: id = {}", id);
         Employee employee = employeeService.getById(id);
 
-        log.debug("getById() EmployeeController - to dto start: id = {}", id);
-        var dto = converter.toReadDto(employee);
+        log.debug("getEmployeeById() EmployeeController - end");
+        return employeeMapper.toEmployeeResponse(employee);
+    }
 
-        log.debug("getEmployeeById() EmployeeController - end: name = {}", dto.name);
-        return dto;
+    @PostMapping("/users")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "This is endpoint to add a new employee.", description = "Create request to add a new employee.", tags = {"Employee"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
+            @ApiResponse(responseCode = "409", description = "Employee already exists")})
+    public EmployeeResponseDto saveEmployee(@RequestBody @Valid EmployeeRequestDto employeeRequest) {
+        Employee employee = employeeMapper.toEmployeeEntity(employeeRequest);
+        Employee savedEmployee = employeeService.create(employee);
+
+        return employeeMapper.toEmployeeResponse(savedEmployee);
     }
 
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee refreshEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-        return employeeService.updateById(id, employee);
+    public EmployeeResponseDto refreshEmployee(@PathVariable("id") Integer id,
+                                               @RequestBody EmployeeUpdateRequestDto employeeRequest) {
+        Employee employeeEntity = employeeMapper.toEmployeeEntity(employeeRequest);
+        Employee updatedEmployeeEntity = employeeService.updateById(id, employeeEntity);
+
+        return employeeMapper.toEmployeeResponse(updatedEmployeeEntity);
     }
 
     @PatchMapping("/users/{id}")
@@ -122,32 +125,35 @@ public class EmployeeController {
 
     @GetMapping("/users/country")
     @ResponseStatus(HttpStatus.OK)
-    public Page<Employee> findByCountry(@RequestParam(required = false) String country,
-                                        @RequestParam(defaultValue = "0") int page,
-                                        @RequestParam(defaultValue = "3") int size,
-                                        @RequestParam(defaultValue = "") List<String> sortList,
-                                        @RequestParam(defaultValue = "DESC") Sort.Direction sortOrder) {
-        //Pageable paging = PageRequest.of(page, size);
-        //Pageable paging = PageRequest.of(page, size, Sort.by("name").ascending());
-        return employeeService.findByCountryContaining(country, page, size, sortList, sortOrder.toString());
+    public Page<EmployeeResponseDto> findByCountry(@RequestParam(required = false) String country,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "3") int size,
+                                                   @RequestParam(defaultValue = "") List<String> sortList,
+                                                   @RequestParam(defaultValue = "DESC") Sort.Direction sortOrder) {
+
+        Page<Employee> pageEmployee = employeeService.findByCountryContaining(country, page, size, sortList, sortOrder.toString());
+        return pageEmployee.map(e -> employeeMapper.toEmployeeResponse(e));
     }
 
     @GetMapping("/users/countryBy")
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getByCountry(@RequestParam String country) {
-        return employeeService.findAllByCountry(country);
+    public List<EmployeeResponseDto> getByCountry(@RequestParam String country) {
+        List<Employee> employees = employeeService.findAllByCountry(country);
+        return employeeMapper.toEmployeeResponseList(employees);
     }
 
-    @GetMapping("/users/email")
+    @GetMapping("/users/email/n")
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> getAllByEmailNull() {
-        return employeeService.findAllByEmailNull();
+    public List<EmployeeResponseDto> getAllByEmailNull() {
+        List<Employee> employees = employeeService.findAllByEmailNull();
+        return employeeMapper.toEmployeeResponseList(employees);
     }
 
-    @GetMapping("/users/country/l")
+    @GetMapping("/users/country/lc")
     @ResponseStatus(HttpStatus.OK)
-    public List<Employee> updateAllByCountryFirstCharLowerToUpper() {
-        return employeeService.updateAllByCountryFirstCharLowerToUpper();
+    public List<EmployeeResponseDto> updateAllByCountryFirstCharLowerToUpper() {
+        List<Employee> employees = employeeService.updateAllByCountryFirstCharLowerToUpper();
+        return employeeMapper.toEmployeeResponseList(employees);
     }
 
     @GetMapping("/users/c")

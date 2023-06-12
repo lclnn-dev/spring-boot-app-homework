@@ -1,9 +1,9 @@
 package com.example.demowithtests;
 
 import com.example.demowithtests.domain.Employee;
-import com.example.demowithtests.dto.EmployeeDto;
+import com.example.demowithtests.dto.response.EmployeeResponseDto;
 import com.example.demowithtests.service.EmployeeService;
-import com.example.demowithtests.util.config.EmployeeConverter;
+import com.example.demowithtests.util.mapper.EmployeeMapper;
 import com.example.demowithtests.web.EmployeeController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +57,7 @@ public class ControllerTests {
     EmployeeService service;
 
     @MockBean
-    EmployeeConverter employeeConverter;
+    EmployeeMapper employeeConverter;
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,14 +66,14 @@ public class ControllerTests {
     @DisplayName("POST /api/users")
     @WithMockUser(roles = "ADMIN")
     public void createPassTest() throws Exception {
-        var response = new EmployeeDto();
-        response.id = 1;
-        response.name = "Mike";
-        response.email = "mail@mail.com";
+        var response = new EmployeeResponseDto();
+        response.setId(1);
+        response.setName("Mike");
+        response.setEmail("mail@mail.com");
         var employee = Employee.builder().id(1).name("Mike").email("mail@mail.com").build();
 
-        when(employeeConverter.toDto(any(Employee.class))).thenReturn(response);
-        when(employeeConverter.fromDto(any(EmployeeDto.class))).thenReturn(employee);
+//        when(employeeConverter.toDto(any(Employee.class))).thenReturn(response);
+//        when(employeeConverter.fromDto(any(EmployeeDto.class))).thenReturn(employee);
         when(service.create(any(Employee.class))).thenReturn(employee);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
@@ -112,13 +118,13 @@ public class ControllerTests {
     @DisplayName("GET /api/users/{id}")
     @WithMockUser(roles = "USER")
     public void getPassByIdTest() throws Exception {
-        var response = new EmployeeDto();
+        var response = new EmployeeResponseDto();
         var employee = Employee.builder()
                 .id(1)
                 .name("Mike")
                 .build();
 
-        when(employeeConverter.toDto(any(Employee.class))).thenReturn(response);
+//        when(employeeConverter.toDto(any(Employee.class))).thenReturn(response);
         when(service.getById(1)).thenReturn(employee);
 
         MockHttpServletRequestBuilder mockRequest = get("/api/users/1");
@@ -134,12 +140,12 @@ public class ControllerTests {
     @DisplayName("PUT /api/users/{id}")
     @WithMockUser(roles = "ADMIN")
     public void updatePassByIdTest() throws Exception {
-        var response = new EmployeeDto();
-        response.id = 1;
+        var response = new EmployeeResponseDto();
+        response.setId(1);
         var employee = Employee.builder().id(1).build();
 
-        when(employeeConverter.toDto(any(Employee.class))).thenReturn(response);
-        when(employeeConverter.fromDto(any(EmployeeDto.class))).thenReturn(employee);
+//        when(employeeConverter.toDto(any(Employee.class))).thenReturn(response);
+//        when(employeeConverter.fromDto(any(EmployeeDto.class))).thenReturn(employee);
         when(service.updateById(eq(1), any(Employee.class))).thenReturn(employee);
 
         MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
