@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -166,11 +165,5 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public List<String> getAllUsersSort() {
         return employeeService.getSortCountry();
-    }
-
-    @GetMapping("/users/emails")
-    @ResponseStatus(HttpStatus.OK)
-    public Optional<String> getAllUsersSo() {
-        return employeeService.findEmails();
     }
 }

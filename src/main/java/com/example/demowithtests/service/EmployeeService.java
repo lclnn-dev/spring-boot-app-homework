@@ -58,6 +58,4 @@ public interface EmployeeService {
      * @return A list of countries in alphabetical order.
      */
     List<String> getSortCountry();
-
-    Optional<String> findEmails();
 }

@@ -92,7 +92,6 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>2.1.214</version>
             <scope>test</scope>
         </dependency>
         <!-- swagger -->
@@ -105,7 +104,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>9.3.1</version>
+
         </dependency>
         <!-- mapstruct -->
         <dependency>

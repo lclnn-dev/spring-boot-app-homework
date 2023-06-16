@@ -20,8 +20,6 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -176,12 +174,7 @@ public class EmployeeServiceBean implements EmployeeService {
         List<Employee> employeeList = employeeRepository.findAll();
         List<String> countries = employeeList.stream()
                 .map(country -> country.getCountry())
-                .collect(Collectors.toList());
-        /*List<String> countries = employeeList.stream()
-                .map(Employee::getCountry)
-                //.sorted(Comparator.naturalOrder())
-                .collect(Collectors.toList());*/
-
+                .toList();
         log.info("getAllEmployeeCountry() - end: countries = {}", countries);
         return countries;
     }
@@ -194,22 +187,6 @@ public class EmployeeServiceBean implements EmployeeService {
                 .map(Employee::getCountry)
                 .filter(c -> c != null)
                 .sorted(Comparator.naturalOrder())
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<String> findEmails() {
-        var employeeList = employeeRepository.findAll();
-
-        var emails = employeeList.stream()
-                .map(Employee::getEmail)
-                .collect(Collectors.toList());
-
-        var opt = emails.stream()
-                .filter(s -> s.endsWith(".com"))
-                .findFirst()
-                .orElse("error?");
-
-        return Optional.ofNullable(opt);
+                .toList();
     }
 }

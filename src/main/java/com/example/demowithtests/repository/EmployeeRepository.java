@@ -16,13 +16,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     List<Employee> findAllByCountry(String country);
 
-    @Query(value = "SELECT * FROM users JOIN addresses ON users.id = addresses.employee_id " +
-            "WHERE users.gender = :gender AND addresses.country = :country", nativeQuery = true)
+    @Query(value = "SELECT u.* FROM users u JOIN addresses a ON u.id = a.employee_id " +
+            "WHERE u.gender = :gender AND a.country = :country", nativeQuery = true)
     List<Employee> findAllByGenderAndAddressCountry(String gender, String country);
 
     Optional<Employee> findFirstByName(String name);
-
-    Employee findEmployeeByEmailNotNull();
 
     List<Employee> findAllByEmailNull();
 

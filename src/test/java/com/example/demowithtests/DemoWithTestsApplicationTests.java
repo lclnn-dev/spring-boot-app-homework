@@ -19,7 +19,7 @@ class DemoWithTestsApplicationTests {
     private EmployeeController employeeController;
 
     @Test
-    @DisplayName("context loads")
+    @DisplayName("Context loads")
     void contextLoads() {
         Assertions.assertThat(employeeController).isNotNull();
     }
