@@ -166,4 +166,18 @@ public class EmployeeController {
     public List<String> getAllUsersSort() {
         return employeeService.getSortCountry();
     }
+
+    @GetMapping("/users/country/notin")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EmployeeResponseDto> getAllByCountryNotIn(@RequestParam List<String> countries) {
+        List<Employee> employees = employeeService.findAllByCountryNotIn(countries);
+        return employeeMapper.toEmployeeResponseList(employees);
+    }
+
+    @GetMapping("/users/deleted/ids")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EmployeeResponseDto> getAllDeletedByIds(@RequestParam List<Integer> ids) {
+        List<Employee> employees = employeeService.findAllDeletedByIds(ids);
+        return employeeMapper.toEmployeeResponseList(employees);
+    }
 }

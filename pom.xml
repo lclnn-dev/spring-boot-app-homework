@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>homework-07</groupId>
+    <groupId>homework-09</groupId>
     <artifactId>spring-boot-app-homework</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 

@@ -4,9 +4,6 @@ import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.Gender;
 import com.example.demowithtests.repository.EmployeeRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -20,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -154,5 +153,34 @@ class EmployeeRepositoryTest {
 
         List<Employee> employeesAfter = employeeRepository.findAll();
         assertThat(employeesAfter).hasSize(employeesBefore.size() - 1);
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Get all employees whose country of residence does not match any of the specified countries - test")
+    void shouldGetListEmployeesByCountryNotIn() {
+
+        List<Employee> employees = employeeRepository.findAllByCountryNotIn(List.of("A"));
+
+        assertThat(employees).isNotNull().isNotEmpty();
+        assertThat(employees).hasSize(1);
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Get all employees whose deletion is marked and their identifier is in the given list - test")
+    void shouldGetListEmployeesByDeleteMarkedAndListIdentifier() {
+
+        Employee employee = Employee.builder()
+                .name("name11")
+                .country("country11")
+                .isDeleted(true)
+                .build();
+
+        employeeRepository.save(employee);
+
+        List<Employee> employees = employeeRepository.findAllDeletedByIds(List.of(3));
+
+        assertThat(employees).isNotNull().isNotEmpty().hasSize(1);
     }
 }

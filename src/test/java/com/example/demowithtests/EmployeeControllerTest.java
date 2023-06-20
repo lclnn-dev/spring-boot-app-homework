@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.times;
@@ -279,6 +281,60 @@ class EmployeeControllerTest {
                 .andExpect(jsonPath("$[0].country").value("US"));
 
         verify(employeeService, times(1)).updateAllByCountryFirstCharLowerToUpper();
+        verify(employeeMapper, times(1)).toEmployeeResponseList(employees);
+    }
+
+    @Test
+    @DisplayName("GET /api/users/country/notin")
+    @WithMockUser(roles = "USER")
+    void shouldReturnListOfEmployeeResponseDto_whenGetAllByCountryNotIn() throws Exception {
+
+        Employee employee1 = Employee.builder().id(1).name("name1").country("A").build();
+        List<Employee> employees = List.of(employee1);
+
+        EmployeeResponseDto responseDto1 = new EmployeeResponseDto();
+        responseDto1.setId(1);
+        responseDto1.setName("name1");
+        responseDto1.setCountry("A");
+
+        List<EmployeeResponseDto> expectedResponse = List.of(responseDto1);
+
+        when(employeeService.findAllByCountryNotIn(anyList())).thenReturn(employees);
+        when(employeeMapper.toEmployeeResponseList(employees)).thenReturn(expectedResponse);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .get("/api/users/country/notin").param("countries", "А,В")
+                .with(csrf());
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("name1"));
+
+        verify(employeeService, times(1)).findAllByCountryNotIn(anyList());
+        verify(employeeMapper, times(1)).toEmployeeResponseList(employees);
+    }
+
+    @Test
+    @DisplayName("GET /api/users/deleted/ids")
+    @WithMockUser(roles = "USER")
+    void shouldReturnListOfEmployeeResponseDto_whenGetAllDeletedByIds() throws Exception {
+
+        List<Employee> employees = new ArrayList<>();
+        List<EmployeeResponseDto> expectedResponse = new ArrayList<>();
+
+        when(employeeService.findAllDeletedByIds(anyList())).thenReturn(employees);
+        when(employeeMapper.toEmployeeResponseList(employees)).thenReturn(expectedResponse);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders
+                .get("/api/users/deleted/ids").param("ids", "1,2")
+                .with(csrf());
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk());
+
+        verify(employeeService, times(1)).findAllDeletedByIds(anyList());
         verify(employeeMapper, times(1)).toEmployeeResponseList(employees);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,4 +36,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Page<Employee> findAllByCountryContaining(String country, Pageable pageable);
 
+    @Query(value = "SELECT * FROM users WHERE country NOT IN :countries", nativeQuery = true)
+    List<Employee> findAllByCountryNotIn(@Param("countries") List<String> countries);
+
+    @Query(value = "SELECT * FROM users WHERE is_deleted = TRUE AND id IN :ids", nativeQuery = true)
+    List<Employee> findAllDeletedByIds(@Param("ids") List<Integer> ids);
 }

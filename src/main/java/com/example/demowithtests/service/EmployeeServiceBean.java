@@ -189,4 +189,14 @@ public class EmployeeServiceBean implements EmployeeService {
                 .sorted(Comparator.naturalOrder())
                 .toList();
     }
+
+    @Override
+    public List<Employee> findAllByCountryNotIn(List<String> countries) {
+        return employeeRepository.findAllByCountryNotIn(countries);
+    }
+
+    @Override
+    public List<Employee> findAllDeletedByIds(List<Integer> ids) {
+        return employeeRepository.findAllDeletedByIds(ids);
+    }
 }

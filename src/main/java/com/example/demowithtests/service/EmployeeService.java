@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface EmployeeService {
 
@@ -58,4 +57,8 @@ public interface EmployeeService {
      * @return A list of countries in alphabetical order.
      */
     List<String> getSortCountry();
+
+    List<Employee> findAllByCountryNotIn(List<String> countries);
+
+    List<Employee> findAllDeletedByIds(List<Integer> ids);
 }
