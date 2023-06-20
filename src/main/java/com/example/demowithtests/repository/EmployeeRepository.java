@@ -36,9 +36,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Page<Employee> findAllByCountryContaining(String country, Pageable pageable);
 
-    @Query(value = "SELECT * FROM users WHERE country NOT IN :countries", nativeQuery = true)
+    @Query(value = "SELECT e FROM Employee e WHERE e.country NOT IN :countries")
     List<Employee> findAllByCountryNotIn(@Param("countries") List<String> countries);
 
-    @Query(value = "SELECT * FROM users WHERE is_deleted = TRUE AND id IN :ids", nativeQuery = true)
+    @Query(value = "SELECT e FROM Employee e WHERE e.isDeleted = TRUE AND e.id IN :ids")
     List<Employee> findAllDeletedByIds(@Param("ids") List<Integer> ids);
 }
