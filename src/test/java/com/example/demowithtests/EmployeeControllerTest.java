@@ -69,10 +69,9 @@ class EmployeeControllerTest {
     @WithMockUser(roles = "ADMIN")
     void shouldReturnEmployeeResponseDto_StatusCreated_AfterSaveEmployee() throws Exception {
 
-        EmployeeResponseDto response = new EmployeeResponseDto();
-        response.setId(1);
-        response.setName("Mike");
-        response.setEmail("mail@mail.com");
+        EmployeeResponseDto response = new EmployeeResponseDto(
+                1, "Mike", "England", "mail@mail.com",
+                null, null, null, false);
 
         Employee employee = Employee.builder()
                 .id(1)
@@ -101,9 +100,10 @@ class EmployeeControllerTest {
     @DisplayName("GET /api/users/{id}")
     @WithMockUser(roles = "USER")
     void shouldReturnEmployeeResponseDto_StatusOk_AfterGetEmployeeById() throws Exception {
-        EmployeeResponseDto response = new EmployeeResponseDto();
-        response.setId(1);
-        response.setName("Mike");
+
+        EmployeeResponseDto response = new EmployeeResponseDto(
+                1, "Mike",
+                null, null, null, null, null, false);
 
         Employee employee = Employee.builder().id(1).name("Mike").build();
 
@@ -124,8 +124,10 @@ class EmployeeControllerTest {
     @DisplayName("PUT /api/users/{id}")
     @WithMockUser(roles = "ADMIN")
     void shouldReturnEmployeeResponseDto_StatusOk_AfterUpdateEmployeeById() throws Exception {
-        EmployeeResponseDto response = new EmployeeResponseDto();
-        response.setId(1);
+
+        EmployeeResponseDto response = new EmployeeResponseDto(
+                1,
+                null, null, null, null, null, null, false);
 
         Employee employee = Employee.builder().id(1).build();
 
@@ -195,15 +197,13 @@ class EmployeeControllerTest {
         Pageable pageable = PageRequest.of(page, size);
         Page<Employee> employeesPage = new PageImpl<>(employees, pageable, employees.size());
 
-        EmployeeResponseDto responseDto1 = new EmployeeResponseDto();
-        responseDto1.setId(1);
-        responseDto1.setName("John");
-        responseDto1.setCountry("US");
+        EmployeeResponseDto responseDto1 = new EmployeeResponseDto(
+                1, "John", "US",
+                null, null, null, null, false);
 
-        EmployeeResponseDto responseDto2 = new EmployeeResponseDto();
-        responseDto2.setId(2);
-        responseDto2.setName("Jane");
-        responseDto2.setCountry("UK");
+        EmployeeResponseDto responseDto2 = new EmployeeResponseDto(
+                2, "Jane", "UK",
+                null, null, null, null, false);
 
         when(employeeService.getAllWithPagination(pageable)).thenReturn(employeesPage);
         when(employeeMapper.toEmployeeResponse(employee1)).thenReturn(responseDto1);
@@ -235,10 +235,9 @@ class EmployeeControllerTest {
         Employee employee = Employee.builder().id(1).name("John").email("null").build();
         List<Employee> employees = List.of(employee);
 
-        EmployeeResponseDto responseDto = new EmployeeResponseDto();
-        responseDto.setId(1);
-        responseDto.setName("John");
-        responseDto.setEmail(null);
+        EmployeeResponseDto responseDto = new EmployeeResponseDto(
+                1, "John",
+                null, null, null, null, null, false);
 
         List<EmployeeResponseDto> expectedResponse = List.of(responseDto);
 
@@ -263,10 +262,9 @@ class EmployeeControllerTest {
         Employee employee = Employee.builder().id(1).name("John").country("uS").build();
         List<Employee> employees = List.of(employee);
 
-        EmployeeResponseDto responseDto1 = new EmployeeResponseDto();
-        responseDto1.setId(1);
-        responseDto1.setName("John");
-        responseDto1.setCountry("US");
+        EmployeeResponseDto responseDto1 = new EmployeeResponseDto(
+                1, "John", "US",
+                null, null, null, null, false);
 
         List<EmployeeResponseDto> expectedResponse = List.of(responseDto1);
 
@@ -292,10 +290,9 @@ class EmployeeControllerTest {
         Employee employee1 = Employee.builder().id(1).name("name1").country("A").build();
         List<Employee> employees = List.of(employee1);
 
-        EmployeeResponseDto responseDto1 = new EmployeeResponseDto();
-        responseDto1.setId(1);
-        responseDto1.setName("name1");
-        responseDto1.setCountry("A");
+        EmployeeResponseDto responseDto1 = new EmployeeResponseDto(
+                1, "name1", "A",
+                null, null, null, null, false);
 
         List<EmployeeResponseDto> expectedResponse = List.of(responseDto1);
 

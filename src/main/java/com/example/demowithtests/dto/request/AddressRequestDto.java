@@ -1,15 +1,15 @@
 package com.example.demowithtests.dto.request;
 
-import lombok.Getter;
-import lombok.Setter;
+public record AddressRequestDto(
+        Boolean addressHasActive,
+        String country,
+        String city,
+        String street) {
 
-//@Accessors(chain = true)
-@Setter
-@Getter
-public class AddressRequestDto {
-
-    private Boolean addressHasActive = Boolean.TRUE;
-    private String country;
-    private String city;
-    private String street;
+    public AddressRequestDto(Boolean addressHasActive, String country, String city, String street) {
+        this.addressHasActive = addressHasActive != null ? addressHasActive : Boolean.TRUE;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+    }
 }

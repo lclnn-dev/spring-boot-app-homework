@@ -3,7 +3,7 @@ package com.example.demowithtests;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.Gender;
 import com.example.demowithtests.repository.EmployeeRepository;
-import com.example.demowithtests.service.EmployeeServiceBean;
+import com.example.demowithtests.service.impl.EmployeeServiceBean;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;
 import com.example.demowithtests.util.exception.ResourceWasDeletedException;
 import org.junit.jupiter.api.BeforeEach;
