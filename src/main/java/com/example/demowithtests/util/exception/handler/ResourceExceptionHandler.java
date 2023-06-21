@@ -1,5 +1,9 @@
-package com.example.demowithtests.util.exception;
+package com.example.demowithtests.util.exception.handler;
 
+import com.example.demowithtests.util.exception.ErrorDetails;
+import com.example.demowithtests.util.exception.NoResultsFoundException;
+import com.example.demowithtests.util.exception.ResourceDeleteStatusException;
+import com.example.demowithtests.util.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

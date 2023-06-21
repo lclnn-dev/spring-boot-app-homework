@@ -1,5 +1,6 @@
-package com.example.demowithtests.util.exception;
+package com.example.demowithtests.util.exception.handler;
 
+import com.example.demowithtests.util.exception.ErrorDetails;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
