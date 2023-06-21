@@ -1,10 +1,10 @@
 # Spring Boot configuration
 spring:
   #application:
-   # name: service
+  # name: service
   #main:
-   # allow-bean-definition-overriding: true
-   # lazy-initialization: true
+  # allow-bean-definition-overriding: true
+  # lazy-initialization: true
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -25,10 +25,22 @@ spring:
     enabled: false
     #    clean-disabled: true
     baseline-on-migrate: true
-#  security:
-#    user:
-#      name: admin
-#      password: admin
+  #  security:
+  #    user:
+  #      name: admin
+  #      password: admin
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GOOGLE_MAIL_USERNAME}
+    password: ${GOOGLE_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
+
 # Logger configuration
 logging:
   pattern:
