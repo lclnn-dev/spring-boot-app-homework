@@ -1,8 +1,13 @@
 package com.example.demowithtests.dto.request;
 
+import com.example.demowithtests.util.annotations.dto.CountryRightFormed;
+
 public record AddressRequestDto(
         Boolean addressHasActive,
+
+        @CountryRightFormed
         String country,
+
         String city,
         String street) {
 

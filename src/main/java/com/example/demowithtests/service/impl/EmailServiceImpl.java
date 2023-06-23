@@ -1,6 +1,5 @@
 package com.example.demowithtests.service.impl;
 
-import com.example.demowithtests.dto.request.EmailDetailsDto;
 import com.example.demowithtests.service.EmailService;
 import com.example.demowithtests.util.exception.EmailSimpleSenderException;
 import lombok.RequiredArgsConstructor;

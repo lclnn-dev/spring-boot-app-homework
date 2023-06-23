@@ -1,5 +1,7 @@
 package com.example.demowithtests.domain;
 
+import com.example.demowithtests.util.annotations.entity.Name;
+import com.example.demowithtests.util.annotations.entity.ToLowerCase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,12 +37,14 @@ public class Employee {
     private Integer id;
 
     @Column(name = "name")
+    @Name
     private String name;
 
     @Column(name = "country")
     private String country;
 
     @Column(name = "email")
+    @ToLowerCase
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL)
