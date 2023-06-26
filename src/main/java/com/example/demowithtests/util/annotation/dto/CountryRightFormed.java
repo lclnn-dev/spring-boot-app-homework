@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.annotations.dto;
+package com.example.demowithtests.util.annotation.dto;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

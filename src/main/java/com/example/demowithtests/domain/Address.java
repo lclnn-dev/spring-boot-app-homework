@@ -1,5 +1,6 @@
 package com.example.demowithtests.domain;
 
+import com.example.demowithtests.util.annotation.entity.Name;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +35,7 @@ public class Address {
     private String country;
 
     @Column(name = "city")
+    @Name
     private String city;
 
     @Column(name = "street")

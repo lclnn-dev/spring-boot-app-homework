@@ -1,7 +1,8 @@
-package com.example.demowithtests.util.annotations.dto;
+package com.example.demowithtests.util.annotation.dto;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,9 +22,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = BlockedEmailDomainsValidator.class)
 public @interface BlockedEmailDomains {
-    String message() default "This email domain is banned";
+    String message() default "This email domain/provider is banned";
 
-    String[] contains() default {".ru", ".su"};
+    boolean appendDefault() default false;
+
+    String[] contains();
 
     Class<?>[] groups() default {};
 

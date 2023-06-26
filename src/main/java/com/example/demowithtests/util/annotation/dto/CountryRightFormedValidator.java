@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.annotations.dto;
+package com.example.demowithtests.util.annotation.dto;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -7,8 +7,6 @@ public class CountryRightFormedValidator implements ConstraintValidator<CountryR
 
     @Override
     public boolean isValid(String country, ConstraintValidatorContext constraintValidatorContext) {
-        if (country == null)
-            return true;
-        return country.length() == 2 && country.equals(country.toUpperCase());
+        return country != null && country.length() == 2 && country.equals(country.toUpperCase());
     }
 }

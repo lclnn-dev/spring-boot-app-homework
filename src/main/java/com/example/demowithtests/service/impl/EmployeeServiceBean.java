@@ -3,9 +3,9 @@ package com.example.demowithtests.service.impl;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeService;
-import com.example.demowithtests.util.annotations.entity.ActivateCustomAnnotations;
-import com.example.demowithtests.util.annotations.entity.Name;
-import com.example.demowithtests.util.annotations.entity.ToLowerCase;
+import com.example.demowithtests.util.annotation.entity.ActivateCustomAnnotations;
+import com.example.demowithtests.util.annotation.entity.Name;
+import com.example.demowithtests.util.annotation.entity.ToLowerCase;
 import com.example.demowithtests.util.exception.NoResultsFoundException;
 import com.example.demowithtests.util.exception.ResourceDeleteStatusException;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;
@@ -13,7 +13,6 @@ import com.example.demowithtests.util.exception.ResourceWasDeletedException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +25,6 @@ import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Slf4j
 @Service
 public class EmployeeServiceBean implements EmployeeService {
 
@@ -37,7 +35,6 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     @ActivateCustomAnnotations({Name.class, ToLowerCase.class})
-    // @Transactional(propagation = Propagation.MANDATORY)
     public Employee create(Employee employee) {
         return employeeRepository.save(employee);
     }
@@ -54,10 +51,7 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public Page<Employee> getAllWithPagination(Pageable pageable) {
-      //  log.debug("getAllWithPagination() - start: pageable = {}", pageable);
         Page<Employee> list = employeeRepository.findAll(pageable);
-
-      //  log.debug("getAllWithPagination() - end: list = {}", list);
         return list;
     }
 
@@ -161,26 +155,22 @@ public class EmployeeServiceBean implements EmployeeService {
 
     @Override
     public List<Employee> updateAllByCountryFirstCharLowerToUpper() {
-        var resultEmployees = employeeRepository.findAllByCountryStartsWithLowerCase();
-        log.debug("updateAllByCountryFirstCharLowerToUpper() - start");
+        List<Employee> resultEmployees = employeeRepository.findAllByCountryStartsWithLowerCase();
 
         if (!resultEmployees.isEmpty()) {
             resultEmployees.forEach(e -> e.setCountry(StringUtils.capitalize(e.getCountry())));
             employeeRepository.saveAll(resultEmployees);
         }
 
-        log.debug("updateAllByCountryFirstCharLowerToUpper() - end");
         return resultEmployees;
     }
 
     @Override
     public List<String> getAllEmployeeCountry() {
-        log.info("getAllEmployeeCountry() - start:");
         List<Employee> employeeList = employeeRepository.findAll();
         List<String> countries = employeeList.stream()
                 .map(country -> country.getCountry())
                 .toList();
-        log.info("getAllEmployeeCountry() - end: countries = {}", countries);
         return countries;
     }
 

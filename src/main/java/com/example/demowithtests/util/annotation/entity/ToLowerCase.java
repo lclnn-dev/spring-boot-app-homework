@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.annotations.entity;
+package com.example.demowithtests.util.annotation.entity;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Name {
+public @interface ToLowerCase {
 }

@@ -1,6 +1,6 @@
 package com.example.demowithtests.dto.request;
 
-import com.example.demowithtests.util.annotations.dto.CountryRightFormed;
+import com.example.demowithtests.util.annotation.dto.CountryRightFormed;
 
 public record AddressRequestDto(
         Boolean addressHasActive,

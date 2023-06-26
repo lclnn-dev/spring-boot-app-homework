@@ -1,7 +1,7 @@
 package com.example.demowithtests.domain;
 
-import com.example.demowithtests.util.annotations.entity.Name;
-import com.example.demowithtests.util.annotations.entity.ToLowerCase;
+import com.example.demowithtests.util.annotation.entity.Name;
+import com.example.demowithtests.util.annotation.entity.ToLowerCase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +18,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
+@ToString
 public class Employee {
 
     @Id
@@ -36,7 +38,7 @@ public class Employee {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     @Name
     private String name;
 
@@ -57,4 +59,5 @@ public class Employee {
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
 }

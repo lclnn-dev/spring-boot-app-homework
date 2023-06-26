@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.annotations;
+package com.example.demowithtests.util.annotation;
 
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -6,8 +6,10 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 @Log4j2
@@ -15,20 +17,20 @@ import java.util.Collection;
 @Component
 public class LoggingServiceClassesAspect {
 
-//    @Pointcut("execution(public * com.example.demowithtests.service.*.*.*(..))")
     @Pointcut("execution(public * com.example.demowithtests.service.impl.EmployeeServiceBean.*(..))")
     public void callAtMyServicesPublicMethods() {
     }
 
     @Before("callAtMyServicesPublicMethods()")
     public void logBefore(JoinPoint joinPoint) {
-        String methodName = joinPoint.getSignature().toShortString();
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        String methodName = signature.toShortString();
         Object[] args = joinPoint.getArgs();
         if (args.length > 0) {
-//            log.debug("Service: " + methodName + " - start. Args count - {}", args.length);
-            log.debug("\u001B[34m" + "Service: " + methodName + " - start. Args count - {}" + "\u001B[0m", args.length);
+            String paramNames = Arrays.toString(signature.getParameterNames());
+            log.debug("\u001B[34m" + "\nService: " + methodName + " - start. Args count - {}:" +
+                    "\n{} = {}" + "\u001B[0m", args.length, paramNames, args);
         } else {
-//            log.debug("Service: " + methodName + " - start.");
             log.debug("\u001B[34m" + "Service: " + methodName + " - start." + "\u001B[0m");
         }
     }
@@ -45,10 +47,8 @@ public class LoggingServiceClassesAspect {
             } else {
                 outputValue = returningValue;
             }
-//            log.debug("Service: " + methodName + " - end. Returns - {}", outputValue);
-            log.debug("\u001B[34m" + "Service: " + methodName + " - end. Returns - {}" + "\u001B[0m", outputValue);
+            log.debug("\u001B[34m" + "Service: " + methodName + " - end.\nReturns - {}" + "\u001B[0m", outputValue);
         } else {
-//            log.debug("Service: " + methodName + " - end.");
             log.debug("\u001B[34m" + "Service: " + methodName + " - end." + "\u001B[0m");
         }
     }

@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +35,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-@Slf4j
 @Tag(name = "Employee", description = "Employee API")
 public class EmployeeController {
 
@@ -66,10 +64,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found.")})
     public EmployeeResponseDto getEmployeeById(@PathVariable Integer id) {
-        log.debug("getEmployeeById() EmployeeController - start: id = {}", id);
         Employee employee = employeeService.getById(id);
-
-        log.debug("getEmployeeById() EmployeeController - end");
         return employeeMapper.toEmployeeResponse(employee);
     }
 

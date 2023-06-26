@@ -1,10 +1,12 @@
 package com.example.demowithtests.dto.request;
 
 import com.example.demowithtests.domain.Gender;
-import com.example.demowithtests.util.annotations.dto.BlockedEmailDomains;
-import com.example.demowithtests.util.annotations.dto.CountryRightFormed;
+import com.example.demowithtests.util.annotation.dto.BlockedEmailDomains;
+import com.example.demowithtests.util.annotation.dto.CountryRightFormed;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -23,12 +25,14 @@ public record EmployeeRequestDto(
         String country,
 
         @Email
-        @NotNull
+        @NotEmpty
         @Schema(description = "Email address of an employee.", example = "billys@mail.com",
                 requiredMode = Schema.RequiredMode.REQUIRED)
-        @BlockedEmailDomains(contains = {".com1", ".ru", ".su"})
+        @BlockedEmailDomains(contains = {"com1", "rambler"}, appendDefault = true)
         String email,
 
         Gender gender,
+
+        @Valid
         Set<AddressRequestDto> addresses) {
 }
