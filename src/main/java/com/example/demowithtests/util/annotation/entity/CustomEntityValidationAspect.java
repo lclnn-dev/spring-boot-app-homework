@@ -78,9 +78,9 @@ public class CustomEntityValidationAspect {
 
     private void setFormattedName(Object arg, Field field) throws IllegalAccessException {
         field.setAccessible(true);
-        Object value = field.get(arg);
-        if (value instanceof String) {
-            field.set(arg, toNameFormat((String) value));
+        Object valueArg = field.get(arg);
+        if (valueArg instanceof String value) {
+            field.set(arg, toNameFormat(value));
         }
 
         field.setAccessible(false);
@@ -92,9 +92,9 @@ public class CustomEntityValidationAspect {
 
     private void setLowerCase(Object arg, Field field) throws IllegalAccessException {
         field.setAccessible(true);
-        Object value = field.get(arg);
-        if (value instanceof String) {
-            field.set(arg, ((String) value).toLowerCase());
+        Object valueArg = field.get(arg);
+        if (valueArg instanceof String value) {
+            field.set(arg, value.toLowerCase());
         }
 
         field.setAccessible(false);
