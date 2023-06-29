@@ -13,6 +13,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+
+
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
@@ -42,6 +51,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PATCH, "/api/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/email/**").hasRole("ADMIN")
+                .requestMatchers(AUTH_WHITELIST).permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .csrf().disable()
                 .formLogin().disable();

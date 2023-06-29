@@ -19,7 +19,7 @@ public record EmployeeRequestDto(
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String name,
 
-        @Schema(description = "Name of the country.", example = "England",
+        @Schema(description = "Name of the country. Country must be a 2 characters length and uppercase.", example = "EN",
                 requiredMode = Schema.RequiredMode.REQUIRED)
         @CountryRightFormed
         String country,
@@ -31,8 +31,10 @@ public record EmployeeRequestDto(
         @BlockedEmailDomains(contains = {"com1", "rambler"}, appendDefault = true)
         String email,
 
+        @Schema(description = "Gender of an employee.", example = "M")
         Gender gender,
 
         @Valid
+        @Schema(description = "Set of addresses.")
         Set<AddressRequestDto> addresses) {
 }

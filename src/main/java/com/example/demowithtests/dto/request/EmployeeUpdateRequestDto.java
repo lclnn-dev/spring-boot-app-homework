@@ -1,5 +1,6 @@
 package com.example.demowithtests.dto.request;
 
+import com.example.demowithtests.util.annotation.dto.CountryRightFormed;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -13,8 +14,9 @@ public record EmployeeUpdateRequestDto(
                 requiredMode = Schema.RequiredMode.REQUIRED)
         String name,
 
-        @Schema(description = "Name of the country.", example = "England",
+        @Schema(description = "Name of the country. Country must be a 2 characters length and uppercase.", example = "EN",
                 requiredMode = Schema.RequiredMode.REQUIRED)
+        @CountryRightFormed
         String country,
 
         @Email

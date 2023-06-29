@@ -16,7 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Component
 public class LoggingControllerClassesAspect {
 
-    @Pointcut("execution(public * com.example.demowithtests.web.EmployeeController.*(..))")
+    @Pointcut("execution(public * com.example.demowithtests.web.controller.impl.EmployeeControllerBean.*(..))")
     public void callAtMyControllersPublicMethods() {
     }
 

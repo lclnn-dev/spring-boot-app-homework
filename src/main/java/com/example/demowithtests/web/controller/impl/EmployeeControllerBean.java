@@ -1,4 +1,4 @@
-package com.example.demowithtests.web;
+package com.example.demowithtests.web.controller.impl;
 
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.request.EmployeeRequestDto;
@@ -6,9 +6,8 @@ import com.example.demowithtests.dto.request.EmployeeUpdateRequestDto;
 import com.example.demowithtests.dto.response.EmployeeResponseDto;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.util.mapper.EmployeeMapper;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import com.example.demowithtests.web.controller.EmployeeController;
+import com.example.demowithtests.web.controller.swagger.EmployeeControllerSwagger;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -35,12 +34,12 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Employee", description = "Employee API")
-public class EmployeeController {
+public class EmployeeControllerBean implements EmployeeController, EmployeeControllerSwagger {
 
     private final EmployeeService employeeService;
     private final EmployeeMapper employeeMapper;
 
+    @Override
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllUsers() {
@@ -48,6 +47,7 @@ public class EmployeeController {
         return employeeMapper.toEmployeeResponseList(employees);
     }
 
+    @Override
     @GetMapping("/users/p")
     @ResponseStatus(HttpStatus.OK)
     public Page<EmployeeResponseDto> getPage(@RequestParam(defaultValue = "0") int page,
@@ -56,26 +56,17 @@ public class EmployeeController {
         return employeeService.getAllWithPagination(paging).map(e -> employeeMapper.toEmployeeResponse(e));
     }
 
+    @Override
     @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "This is endpoint returned a employee by his id.", description = "Create request to read a employee by id", tags = {"Employee"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "OK. The employee founded."),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found.")})
     public EmployeeResponseDto getEmployeeById(@PathVariable Integer id) {
         Employee employee = employeeService.getById(id);
         return employeeMapper.toEmployeeResponse(employee);
     }
 
+    @Override
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "This is endpoint to add a new employee.", description = "Create request to add a new employee.", tags = {"Employee"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "CREATED. The new employee is successfully created and added to database."),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND. Specified employee request not found."),
-            @ApiResponse(responseCode = "409", description = "Employee already exists")})
     public EmployeeResponseDto saveEmployee(@RequestBody @Valid EmployeeRequestDto employeeRequest) {
         Employee employee = employeeMapper.toEmployeeEntity(employeeRequest);
         Employee savedEmployee = employeeService.create(employee);
@@ -83,6 +74,7 @@ public class EmployeeController {
         return employeeMapper.toEmployeeResponse(savedEmployee);
     }
 
+    @Override
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeResponseDto refreshEmployee(@PathVariable("id") Integer id,
@@ -93,30 +85,35 @@ public class EmployeeController {
         return employeeMapper.toEmployeeResponse(updatedEmployeeEntity);
     }
 
+    @Override
     @PatchMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeSoftEmployeeById(@PathVariable Integer id) {
         employeeService.removeSoftById(id);
     }
 
+    @Override
     @PatchMapping("/users/re/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void recoverEmployeeById(@PathVariable Integer id) {
         employeeService.recoverById(id);
     }
 
+    @Override
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEmployeeById(@PathVariable Integer id) {
         employeeService.removeById(id);
     }
 
+    @Override
     @DeleteMapping("/users")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeAllUsers() {
         employeeService.removeAll();
     }
 
+    @Override
     @GetMapping("/users/country")
     @ResponseStatus(HttpStatus.OK)
     public Page<EmployeeResponseDto> findByCountry(@RequestParam(required = false) String country,
@@ -129,6 +126,7 @@ public class EmployeeController {
         return pageEmployee.map(e -> employeeMapper.toEmployeeResponse(e));
     }
 
+    @Override
     @GetMapping("/users/countryBy")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getByCountry(@RequestParam String country) {
@@ -136,6 +134,7 @@ public class EmployeeController {
         return employeeMapper.toEmployeeResponseList(employees);
     }
 
+    @Override
     @GetMapping("/users/email/n")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllByEmailNull() {
@@ -143,6 +142,7 @@ public class EmployeeController {
         return employeeMapper.toEmployeeResponseList(employees);
     }
 
+    @Override
     @GetMapping("/users/country/lc")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> updateAllByCountryFirstCharLowerToUpper() {
@@ -150,18 +150,21 @@ public class EmployeeController {
         return employeeMapper.toEmployeeResponseList(employees);
     }
 
+    @Override
     @GetMapping("/users/c")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getAllUsersC() {
         return employeeService.getAllEmployeeCountry();
     }
 
+    @Override
     @GetMapping("/users/s")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getAllUsersSort() {
         return employeeService.getSortCountry();
     }
 
+    @Override
     @GetMapping("/users/country/notin")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllByCountryNotIn(@RequestParam List<String> countries) {
@@ -169,6 +172,7 @@ public class EmployeeController {
         return employeeMapper.toEmployeeResponseList(employees);
     }
 
+    @Override
     @GetMapping("/users/deleted/ids")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllDeletedByIds(@RequestParam List<Integer> ids) {

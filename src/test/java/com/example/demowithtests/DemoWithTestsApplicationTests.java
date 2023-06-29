@@ -1,6 +1,6 @@
 package com.example.demowithtests;
 
-import com.example.demowithtests.web.EmployeeController;
+import com.example.demowithtests.web.controller.impl.EmployeeControllerBean;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ class DemoWithTestsApplicationTests {
 
     @Autowired
     @Lazy
-    private EmployeeController employeeController;
+    private EmployeeControllerBean employeeController;
 
     @Test
     @DisplayName("Context loads")

@@ -51,11 +51,12 @@ logging:
     com.example.demowithtests: debug
 # Server configuration
 server:
-  port: 8088 #set your port
+  port: 8088
 # Swagger configuration
 springdoc:
   swagger-ui:
     path: /swagger-ui.html # swagger-ui custom path
+    operationsSorter: method
   api-docs:
     path: /v3/api-docs.yaml
 management:
