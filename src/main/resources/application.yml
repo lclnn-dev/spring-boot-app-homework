@@ -5,21 +5,24 @@ spring:
   #main:
   # allow-bean-definition-overriding: true
   # lazy-initialization: true
+
   # Database
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/employee
     username: postgres
     password: pass
+
   # JPA properties
   jpa:
     hibernate:
-      ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
+      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     #open-in-view: false
     #generate-ddl: true
+
   flyway:
     #    locations: filesystem:.\src\main\resources\db\migration
     enabled: false
@@ -38,8 +41,8 @@ spring:
     properties:
       mail:
         smtp:
-          auth: true
-          starttls.enable: true
+          auth: false
+          starttls.enable: false
 
 # Logger configuration
 logging:
@@ -49,9 +52,11 @@ logging:
     org.springframework: info
     org.hibernate: info
     com.example.demowithtests: debug
+
 # Server configuration
 server:
   port: 8088
+
 # Swagger configuration
 springdoc:
   swagger-ui:
@@ -65,3 +70,6 @@ management:
   endpoint:
     health:
       enabled: true
+
+photopass:
+  storageDir: E:/test-photo

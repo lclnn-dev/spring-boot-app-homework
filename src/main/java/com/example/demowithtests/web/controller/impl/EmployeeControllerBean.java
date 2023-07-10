@@ -8,7 +8,6 @@ import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.util.mapper.EmployeeMapper;
 import com.example.demowithtests.web.controller.EmployeeController;
 import com.example.demowithtests.web.controller.swagger.EmployeeControllerSwagger;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -179,4 +178,20 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
         List<Employee> employees = employeeService.findAllDeletedByIds(ids);
         return employeeMapper.toEmployeeResponseList(employees);
     }
+
+    @PatchMapping("/users/{employeeId}/pass/{passId}")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponseDto handPassport(@PathVariable Integer employeeId, @PathVariable Long passId) {
+        Employee employeeWithPass = employeeService.handPassportToEmployee(employeeId, passId);
+        return employeeMapper.toEmployeeResponse(employeeWithPass);
+    }
+
+    @PatchMapping("/users/{employeeId}/pass")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponseDto handFreePassport(@PathVariable Integer employeeId) {
+        Employee employeeWithPass = employeeService.handFreePassportToEmployee(employeeId);
+        return employeeMapper.toEmployeeResponse(employeeWithPass);
+    }
+
+
 }

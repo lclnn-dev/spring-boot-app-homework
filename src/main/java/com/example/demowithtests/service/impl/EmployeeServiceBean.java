@@ -1,11 +1,14 @@
 package com.example.demowithtests.service.impl;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.domain.WorkPass;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeService;
+import com.example.demowithtests.service.WorkPassService;
 import com.example.demowithtests.util.annotation.entity.ActivateCustomAnnotations;
 import com.example.demowithtests.util.annotation.entity.Name;
 import com.example.demowithtests.util.annotation.entity.ToLowerCase;
+import com.example.demowithtests.util.exception.DataAlreadyExistsException;
 import com.example.demowithtests.util.exception.NoResultsFoundException;
 import com.example.demowithtests.util.exception.ResourceDeleteStatusException;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +33,7 @@ import java.util.List;
 public class EmployeeServiceBean implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final WorkPassService passService;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -60,7 +65,7 @@ public class EmployeeServiceBean implements EmployeeService {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(Employee.class, "id", id.toString()));
 
-        if (employee.isDeleted()) {
+        if (employee.getIsDeleted()) {
             throw new ResourceWasDeletedException(Employee.class, "id", id.toString());
         }
 
@@ -103,12 +108,12 @@ public class EmployeeServiceBean implements EmployeeService {
     }
 
     private void setEmployeeDeletedStatus(Employee employee, boolean isDeleted) {
-        if (employee.isDeleted() == isDeleted) {
+        if (employee.getIsDeleted() == isDeleted) {
             String status = isDeleted ? "deleted" : "not deleted";
             throw new ResourceDeleteStatusException(Employee.class, "id", employee.getId().toString(), status);
         }
 
-        employee.setDeleted(isDeleted);
+        employee.setIsDeleted(isDeleted);
         employeeRepository.save(employee);
     }
 
@@ -193,5 +198,48 @@ public class EmployeeServiceBean implements EmployeeService {
     @Override
     public List<Employee> findAllDeletedByIds(List<Integer> ids) {
         return employeeRepository.findAllDeletedByIds(ids);
+    }
+
+    @Override
+    public Employee handPassportToEmployee(Integer employeeId, Long passId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(Employee.class, "id", employeeId.toString()));
+
+        if (employee.getWorkPass() != null) {
+            throw new DataAlreadyExistsException("Employee is already has work pass");
+        }
+
+        WorkPass pass = passService.getById(passId);
+        handlePassport(employee, pass);
+
+        return employeeRepository.save(employee);
+    }
+
+    @Override
+    public Employee handFreePassportToEmployee(Integer employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(Employee.class, "id", employeeId.toString()));
+
+        if (employee.getWorkPass() != null) {
+            throw new DataAlreadyExistsException("Employee is already have work pass");
+        }
+
+        WorkPass pass = passService.getFirstFreePass();
+        handlePassport(employee, pass);
+
+        return employeeRepository.save(employee);
+    }
+
+    private void handlePassport(Employee employee, WorkPass pass) {
+        if (pass.getIsHanded()) {
+            throw new DataAlreadyExistsException("Pass is already handed");
+        }
+
+        LocalDateTime createDate = LocalDateTime.now();
+        pass.setIssueDate(createDate);
+        pass.setExpireDate(createDate.plusMonths(2));
+        pass.setIsHanded(true);
+        passService.updateById(pass.getId(), pass);
+        employee.setWorkPass(pass);
     }
 }

@@ -61,4 +61,8 @@ public interface EmployeeService {
     List<Employee> findAllByCountryNotIn(List<String> countries);
 
     List<Employee> findAllDeletedByIds(List<Integer> ids);
+
+    Employee handPassportToEmployee(Integer employeeId, Long passId);
+
+    Employee handFreePassportToEmployee(Integer employeeId);
 }

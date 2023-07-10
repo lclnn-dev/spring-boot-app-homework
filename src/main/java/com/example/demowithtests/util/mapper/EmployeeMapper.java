@@ -5,12 +5,14 @@ import com.example.demowithtests.dto.request.EmployeeRequestDto;
 import com.example.demowithtests.dto.request.EmployeeUpdateRequestDto;
 import com.example.demowithtests.dto.response.EmployeeResponseDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper {
 
+    @Mapping(source = "workPass.employee.id", target = "workPass.employeeId")
     EmployeeResponseDto toEmployeeResponse(Employee employee);
 
     List<EmployeeResponseDto> toEmployeeResponseList(List<Employee> employees);

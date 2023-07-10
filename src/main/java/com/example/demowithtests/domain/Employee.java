@@ -12,13 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +30,6 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-@ToString
 public class Employee {
 
     @Id
@@ -49,15 +48,18 @@ public class Employee {
     @ToLowerCase
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
-    private Set<Address> addresses = new HashSet<>();
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = Boolean.FALSE;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private Gender gender;
 
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id")
+    private Set<Address> addresses = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pass_id", referencedColumnName = "id")
+    private WorkPass workPass;
 }
