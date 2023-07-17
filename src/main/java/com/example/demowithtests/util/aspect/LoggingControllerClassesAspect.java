@@ -1,5 +1,6 @@
 package com.example.demowithtests.util.aspect;
 
+import com.example.demowithtests.util.constant.LogColorConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -23,16 +24,16 @@ public class LoggingControllerClassesAspect {
     @Before("callAtMyControllersPublicMethods()")
     public void logBefore(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        log.info("\u001B[32m" + "Controller - request: {} {}" + "\u001B[0m", request.getMethod(), request.getRequestURI());
+        log.info(LogColorConstants.ANSI_GREEN + "Controller - request: {} {}" + LogColorConstants.ANSI_RESET, request.getMethod(), request.getRequestURI());
 
         String methodName = joinPoint.getSignature().toShortString();
-        log.info("\u001B[32m" + "Controller: " + methodName + " - start." + "\u001B[0m");
+        log.info(LogColorConstants.ANSI_GREEN + "Controller: " + methodName + " - start." + LogColorConstants.ANSI_RESET);
 
     }
 
     @AfterReturning(value = "callAtMyControllersPublicMethods()")
     public void logAfter(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().toShortString();
-        log.info("\u001B[32m" + "Controller: " + methodName + " - end." + "\u001B[0m");
+        log.info(LogColorConstants.ANSI_GREEN + "Controller: " + methodName + " - end." + LogColorConstants.ANSI_RESET);
     }
 }

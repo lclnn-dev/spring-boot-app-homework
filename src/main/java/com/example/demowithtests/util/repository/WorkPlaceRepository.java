@@ -1,8 +1,7 @@
-package com.example.demowithtests.repository;
+package com.example.demowithtests.util.repository;
 
 import com.example.demowithtests.domain.WorkPlace;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WorkPlaceRepository extends JpaRepository<WorkPlace, Long> {
-
 }

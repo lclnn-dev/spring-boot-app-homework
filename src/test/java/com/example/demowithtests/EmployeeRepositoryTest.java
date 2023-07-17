@@ -3,7 +3,7 @@ package com.example.demowithtests;
 import com.example.demowithtests.domain.Address;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.Gender;
-import com.example.demowithtests.repository.EmployeeRepository;
+import com.example.demowithtests.util.repository.EmployeeRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;

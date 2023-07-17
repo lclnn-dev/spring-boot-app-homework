@@ -7,5 +7,4 @@ public class WorkPlaceConstants {
 
     private WorkPlaceConstants() {
     }
-
 }

@@ -17,7 +17,6 @@ public record WorkPassResponseDto(
         LocalDateTime expireDate,
 
         Boolean isDeleted,
-
         Boolean isHanded,
 
         @Schema(description = "Employee Id")

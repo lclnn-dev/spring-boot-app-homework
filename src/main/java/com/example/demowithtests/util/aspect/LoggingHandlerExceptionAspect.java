@@ -1,5 +1,6 @@
 package com.example.demowithtests.util.aspect;
 
+import com.example.demowithtests.util.constant.LogColorConstants;
 import com.example.demowithtests.util.exception.ErrorDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
@@ -25,10 +26,10 @@ public class LoggingHandlerExceptionAspect {
                 break;
             }
         }
-        log.info("\u001B[33m" + "Exception: {}" + "\u001B[0m", nameException);
+        log.info(LogColorConstants.ANSI_YELLOW + "Exception: {}" + LogColorConstants.ANSI_RESET, nameException);
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        log.info("\u001B[33m" + "Request: {} {}" + "\u001B[0m", request.getMethod(), request.getRequestURI());
+        log.info(LogColorConstants.ANSI_YELLOW + "Request: {} {}" + LogColorConstants.ANSI_RESET, request.getMethod(), request.getRequestURI());
 
         Object result = joinPoint.proceed();
         if (result instanceof ResponseEntity<?> responseEntity) {
@@ -41,7 +42,7 @@ public class LoggingHandlerExceptionAspect {
                 if (details != null) {
                     message += " " + details;
                 }
-                log.info("\u001B[33mResponse: Status {} - Message: {}\u001B[0m", responseEntity.getStatusCode(), message);
+                log.info(LogColorConstants.ANSI_YELLOW + "Response: Status {} - Message: {}" + LogColorConstants.ANSI_RESET, responseEntity.getStatusCode(), message);
             }
         }
 

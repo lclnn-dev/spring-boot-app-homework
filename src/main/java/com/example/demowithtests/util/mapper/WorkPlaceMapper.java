@@ -15,5 +15,4 @@ public interface WorkPlaceMapper {
     List<WorkPlaceResponseDto> toWorkPlaceResponseList(List<WorkPlace> workPlaces);
 
     WorkPlace toWorkPlaceEntity(WorkPlaceRequestDto request);
-
 }

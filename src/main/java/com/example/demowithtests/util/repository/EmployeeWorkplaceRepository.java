@@ -1,4 +1,4 @@
-package com.example.demowithtests.repository;
+package com.example.demowithtests.util.repository;
 
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.EmployeeWorkplace;
@@ -15,5 +15,4 @@ public interface EmployeeWorkplaceRepository extends JpaRepository<EmployeeWorkp
     List<EmployeeWorkplace> findAllByEmployee(Employee employee);
 
     List<EmployeeWorkplace> findByEndDateBeforeAndIsActiveTrue(LocalDateTime currentDate);
-
 }

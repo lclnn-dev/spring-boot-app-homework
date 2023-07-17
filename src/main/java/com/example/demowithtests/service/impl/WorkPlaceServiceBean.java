@@ -1,7 +1,7 @@
 package com.example.demowithtests.service.impl;
 
 import com.example.demowithtests.domain.WorkPlace;
-import com.example.demowithtests.repository.WorkPlaceRepository;
+import com.example.demowithtests.util.repository.WorkPlaceRepository;
 import com.example.demowithtests.service.WorkPlaceService;
 import org.springframework.stereotype.Service;
 

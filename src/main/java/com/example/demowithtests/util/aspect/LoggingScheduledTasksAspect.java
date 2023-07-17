@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 
 @Log4j2
 @Aspect
@@ -49,7 +48,8 @@ public class LoggingScheduledTasksAspect {
                 log.debug(LogColorConstants.ANSI_CYAN + "Returns - {}" + LogColorConstants.ANSI_RESET, outputValue);
                 for (Object item : collection) {
                     if (item instanceof EmployeeWorkplace employeeWorkplace) {
-                        log.debug(LogColorConstants.ANSI_CYAN + "Collection item. employeeId: {}, workPlaceId: {}, endTime: {}" + LogColorConstants.ANSI_RESET,
+                        log.debug(LogColorConstants.ANSI_CYAN +
+                                        "Collection item. employeeId: {}, workPlaceId: {}, endTime: {}" + LogColorConstants.ANSI_RESET,
                                 employeeWorkplace.getEmployee().getId(), employeeWorkplace.getWorkPlace().getId(), employeeWorkplace.getEndDate());
                     }
                 }

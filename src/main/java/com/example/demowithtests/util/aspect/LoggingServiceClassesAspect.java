@@ -1,5 +1,6 @@
 package com.example.demowithtests.util.aspect;
 
+import com.example.demowithtests.util.constant.LogColorConstants;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -28,10 +29,10 @@ public class LoggingServiceClassesAspect {
         Object[] args = joinPoint.getArgs();
         if (args.length > 0) {
             String paramNames = Arrays.toString(signature.getParameterNames());
-            log.debug("\u001B[34m" + "\nService: " + methodName + " - start. Args count - {}:" +
-                    "\n{} = {}" + "\u001B[0m", args.length, paramNames, args);
+            log.debug(LogColorConstants.ANSI_BLUE + "\nService: " + methodName + " - start. Args count - {}:" +
+                    "\n{} = {}" + LogColorConstants.ANSI_RESET, args.length, paramNames, args);
         } else {
-            log.debug("\u001B[34m" + "Service: " + methodName + " - start." + "\u001B[0m");
+            log.debug(LogColorConstants.ANSI_BLUE + "Service: " + methodName + " - start." + LogColorConstants.ANSI_RESET);
         }
     }
 
@@ -48,9 +49,9 @@ public class LoggingServiceClassesAspect {
             } else {
                 outputValue = returningValue;
             }
-            log.debug("\u001B[34m" + "Service: " + methodName + " - end.\nReturns - {}" + "\u001B[0m", outputValue);
+            log.debug(LogColorConstants.ANSI_BLUE + "Service: " + methodName + " - end.\nReturns - {}" + LogColorConstants.ANSI_RESET, outputValue);
         } else {
-            log.debug("\u001B[34m" + "Service: " + methodName + " - end." + "\u001B[0m");
+            log.debug(LogColorConstants.ANSI_BLUE + "Service: " + methodName + " - end." + LogColorConstants.ANSI_RESET);
         }
     }
 }

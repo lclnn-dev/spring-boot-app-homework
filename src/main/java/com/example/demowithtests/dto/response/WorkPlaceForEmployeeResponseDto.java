@@ -10,9 +10,5 @@ public record WorkPlaceForEmployeeResponseDto(
         String name,
         Boolean airCondition,
         Boolean coffeeMachine,
-        Boolean isActive
-) {
-
-
-
+        Boolean isActive) {
 }

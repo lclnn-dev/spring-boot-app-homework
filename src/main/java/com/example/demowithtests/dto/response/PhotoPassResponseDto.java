@@ -14,7 +14,6 @@ public record PhotoPassResponseDto(
         LocalDateTime createDate,
 
         String url,
-
         String fileName,
 
         @Schema(description = "Employee Id")

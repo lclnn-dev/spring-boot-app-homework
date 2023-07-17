@@ -8,5 +8,4 @@ public interface WorkPlaceController {
     WorkPlaceResponseDto getById(Long id);
 
     WorkPlaceResponseDto create(WorkPlaceRequestDto workPlaceRequest);
-
 }

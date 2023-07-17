@@ -12,7 +12,5 @@ public record WorkPlaceResponseDto(
         String name,
         Boolean airCondition,
         Boolean coffeeMachine,
-
-        Set<EmployeeWorkPlaceResponseDto> employees
-) {
+        Set<EmployeeWorkPlaceResponseDto> employees) {
 }

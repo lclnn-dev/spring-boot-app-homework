@@ -8,10 +8,7 @@ public record WorkPlaceRequestDto(
         String name,
 
         Boolean airCondition,
-
-        Boolean coffeeMachine
-
-) {
+        Boolean coffeeMachine) {
 
     public WorkPlaceRequestDto(String name, Boolean airCondition, Boolean coffeeMachine) {
         this.airCondition = airCondition != null ? airCondition : Boolean.TRUE;

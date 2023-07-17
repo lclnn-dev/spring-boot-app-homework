@@ -2,7 +2,7 @@ package com.example.demowithtests.service.impl;
 
 import com.example.demowithtests.domain.PhotoPass;
 import com.example.demowithtests.domain.WorkPass;
-import com.example.demowithtests.repository.WorkPassRepository;
+import com.example.demowithtests.util.repository.WorkPassRepository;
 import com.example.demowithtests.service.FileStorageService;
 import com.example.demowithtests.service.WorkPassService;
 import com.example.demowithtests.util.config.PhotoPassConfig;

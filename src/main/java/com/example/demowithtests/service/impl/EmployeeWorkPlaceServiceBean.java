@@ -3,13 +3,12 @@ package com.example.demowithtests.service.impl;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.EmployeeWorkplace;
 import com.example.demowithtests.domain.WorkPlace;
-import com.example.demowithtests.repository.EmployeeWorkplaceRepository;
+import com.example.demowithtests.util.repository.EmployeeWorkplaceRepository;
 import com.example.demowithtests.service.EmployeeWorkPlaceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,7 +16,6 @@ import java.util.List;
 public class EmployeeWorkPlaceServiceBean implements EmployeeWorkPlaceService {
 
     private final EmployeeWorkplaceRepository repository;
-
 
     @Override
     public EmployeeWorkplace takePlace(Employee employee, WorkPlace workPlace) {
@@ -34,8 +32,7 @@ public class EmployeeWorkPlaceServiceBean implements EmployeeWorkPlaceService {
 
     @Override
     public List<EmployeeWorkplace> checkWorkplaceActivityByDate() {
-        LocalDateTime currentDate = LocalDateTime.now();
-        List<EmployeeWorkplace> workPlacesExpired = repository.findByEndDateBeforeAndIsActiveTrue(currentDate);
+        List<EmployeeWorkplace> workPlacesExpired = repository.findByEndDateBeforeAndIsActiveTrue(LocalDateTime.now());
 
         for (EmployeeWorkplace workplace : workPlacesExpired) {
             workplace.setIsActive(false);

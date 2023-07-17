@@ -10,8 +10,5 @@ public class LogColorConstants {
     public static final String ANSI_RESET = "\u001B[0m";
 
     private LogColorConstants() {
-
     }
-
-
 }

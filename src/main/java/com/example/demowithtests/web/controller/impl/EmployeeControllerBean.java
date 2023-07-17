@@ -199,6 +199,4 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
         Employee employeeWithPlace = employeeService.addWorkPlace(employeeId, workPlaceId);
         return employeeMapper.toEmployeeResponse(employeeWithPlace);
     }
-
-
 }

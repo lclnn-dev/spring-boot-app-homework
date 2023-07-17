@@ -4,7 +4,7 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.EmployeeWorkplace;
 import com.example.demowithtests.domain.WorkPass;
 import com.example.demowithtests.domain.WorkPlace;
-import com.example.demowithtests.repository.EmployeeRepository;
+import com.example.demowithtests.util.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.service.EmployeeWorkPlaceService;
 import com.example.demowithtests.service.WorkPassService;

@@ -15,7 +15,6 @@ public interface EmployeeWorkplaceMapper {
     @Mapping(target = ".", source = "workPlace")
     WorkPlaceForEmployeeResponseDto employeeWorkplaceActivityToWorkPlaceForEmployeeResponseDto(EmployeeWorkplace employeeWorkplace);
 
-
     default Set<WorkPlaceForEmployeeResponseDto> employeeWorkplaceActivitySetToWorkPlaceForEmployeeResponseDtoSet(Set<EmployeeWorkplace> set) {
         if (set == null) {
             return null;
