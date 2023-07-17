@@ -62,4 +62,11 @@ public class Employee {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "pass_id", referencedColumnName = "id")
     private WorkPass workPass;
+
+    @OneToMany(mappedBy = "employee")
+    Set<EmployeeWorkplace> workPlaces;
+
+    public void addWorkPlace(EmployeeWorkplace employeeWorkplace) {
+        this.workPlaces.add(employeeWorkplace);
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.annotation;
+package com.example.demowithtests.util.aspect;
 
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -35,7 +35,8 @@ public class LoggingServiceClassesAspect {
         }
     }
 
-    @AfterReturning(value = "callAtMyServicesPublicMethods()", returning = "returningValue")
+    @AfterReturning(value = "callAtMyServicesPublicMethods()",
+            returning = "returningValue")
     public void logAfter(JoinPoint joinPoint, Object returningValue) {
         String methodName = joinPoint.getSignature().toShortString();
         Object outputValue;

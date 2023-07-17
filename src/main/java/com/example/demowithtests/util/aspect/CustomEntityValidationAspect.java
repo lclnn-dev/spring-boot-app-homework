@@ -1,5 +1,8 @@
-package com.example.demowithtests.util.annotation.entity;
+package com.example.demowithtests.util.aspect;
 
+import com.example.demowithtests.util.annotation.entity.ActivateCustomAnnotations;
+import com.example.demowithtests.util.annotation.entity.Name;
+import com.example.demowithtests.util.annotation.entity.ToLowerCase;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

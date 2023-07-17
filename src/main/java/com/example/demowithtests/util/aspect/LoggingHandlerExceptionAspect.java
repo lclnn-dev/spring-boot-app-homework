@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.annotation;
+package com.example.demowithtests.util.aspect;
 
 import com.example.demowithtests.util.exception.ErrorDetails;
 import jakarta.servlet.http.HttpServletRequest;

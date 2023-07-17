@@ -1,18 +1,24 @@
 package com.example.demowithtests.service.impl;
 
 import com.example.demowithtests.domain.Employee;
+import com.example.demowithtests.domain.EmployeeWorkplace;
 import com.example.demowithtests.domain.WorkPass;
+import com.example.demowithtests.domain.WorkPlace;
 import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeService;
+import com.example.demowithtests.service.EmployeeWorkPlaceService;
 import com.example.demowithtests.service.WorkPassService;
+import com.example.demowithtests.service.WorkPlaceService;
 import com.example.demowithtests.util.annotation.entity.ActivateCustomAnnotations;
 import com.example.demowithtests.util.annotation.entity.Name;
 import com.example.demowithtests.util.annotation.entity.ToLowerCase;
+import com.example.demowithtests.util.constant.WorkPlaceConstants;
 import com.example.demowithtests.util.exception.DataAlreadyExistsException;
 import com.example.demowithtests.util.exception.NoResultsFoundException;
 import com.example.demowithtests.util.exception.ResourceDeleteStatusException;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;
 import com.example.demowithtests.util.exception.ResourceWasDeletedException;
+import com.example.demowithtests.util.exception.WorkPlaceException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -34,6 +41,9 @@ public class EmployeeServiceBean implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final WorkPassService passService;
+    private final WorkPlaceService workPlaceService;
+    private final EmployeeWorkPlaceService activityService;
+
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -241,5 +251,30 @@ public class EmployeeServiceBean implements EmployeeService {
         pass.setIsHanded(true);
         passService.updateById(pass.getId(), pass);
         employee.setWorkPass(pass);
+    }
+
+    @Override
+    public Employee addWorkPlace(Integer employeeId, Long workPlaceId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(Employee.class, "id", employeeId.toString()));
+        WorkPlace workPlace = workPlaceService.getById(workPlaceId);
+
+        checkWorkPlacesEmployee(employee);
+        employee.addWorkPlace(activityService.takePlace(employee, workPlace));
+
+        return employee;
+    }
+
+    private void checkWorkPlacesEmployee(Employee employee) {
+        Set<EmployeeWorkplace> workPlaces = employee.getWorkPlaces();
+
+        if (workPlaces.stream().anyMatch(e -> Boolean.TRUE.equals(e.getIsActive()))) {
+            throw new WorkPlaceException("There is already an active workplace for the employee.");
+        }
+
+        if (workPlaces.size() >= WorkPlaceConstants.MAX_PLACE) {
+            throw new WorkPlaceException(
+                    "The limit on the maximum number of work places for an employee has been reached.");
+        }
     }
 }

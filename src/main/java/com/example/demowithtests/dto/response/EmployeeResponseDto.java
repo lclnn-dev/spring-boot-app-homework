@@ -25,12 +25,15 @@ public record EmployeeResponseDto(
         Gender gender,
         Set<AddressResponseDto> addresses,
         WorkPassResponseDto workPass,
+        Set<WorkPlaceForEmployeeResponseDto> workPlaces,
 
         @Schema(description = "Flag of deletion marker")
         boolean isDeleted) {
 
     public EmployeeResponseDto(Integer id, String name, String country, String email, Date date, Gender gender,
-                               Set<AddressResponseDto> addresses, WorkPassResponseDto workPass, boolean isDeleted) {
+                               Set<AddressResponseDto> addresses, WorkPassResponseDto workPass,
+                               Set<WorkPlaceForEmployeeResponseDto> workPlaces, boolean isDeleted) {
+
         this.id = id;
         this.name = name;
         this.country = country;
@@ -39,6 +42,7 @@ public record EmployeeResponseDto(
         this.gender = gender;
         this.addresses = addresses != null ? addresses : new HashSet<>();
         this.workPass = workPass;
+        this.workPlaces = workPlaces != null ? workPlaces : new HashSet<>();
         this.isDeleted = isDeleted;
     }
 }

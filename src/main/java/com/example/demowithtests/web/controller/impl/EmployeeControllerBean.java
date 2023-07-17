@@ -32,14 +32,14 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeControllerBean implements EmployeeController, EmployeeControllerSwagger {
 
     private final EmployeeService employeeService;
     private final EmployeeMapper employeeMapper;
 
     @Override
-    @GetMapping("/users")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllUsers() {
         List<Employee> employees = employeeService.getAll();
@@ -47,7 +47,7 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @GetMapping("/users/p")
+    @GetMapping("/p")
     @ResponseStatus(HttpStatus.OK)
     public Page<EmployeeResponseDto> getPage(@RequestParam(defaultValue = "0") int page,
                                              @RequestParam(defaultValue = "5") int size) {
@@ -56,7 +56,7 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeResponseDto getEmployeeById(@PathVariable Integer id) {
         Employee employee = employeeService.getById(id);
@@ -64,7 +64,7 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @PostMapping("/users")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EmployeeResponseDto saveEmployee(@RequestBody @Valid EmployeeRequestDto employeeRequest) {
         Employee employee = employeeMapper.toEmployeeEntity(employeeRequest);
@@ -74,7 +74,7 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeResponseDto refreshEmployee(@PathVariable("id") Integer id,
                                                @RequestBody EmployeeUpdateRequestDto employeeRequest) {
@@ -85,35 +85,35 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeSoftEmployeeById(@PathVariable Integer id) {
         employeeService.removeSoftById(id);
     }
 
     @Override
-    @PatchMapping("/users/re/{id}")
+    @PatchMapping("/re/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void recoverEmployeeById(@PathVariable Integer id) {
         employeeService.recoverById(id);
     }
 
     @Override
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEmployeeById(@PathVariable Integer id) {
         employeeService.removeById(id);
     }
 
     @Override
-    @DeleteMapping("/users")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeAllUsers() {
         employeeService.removeAll();
     }
 
     @Override
-    @GetMapping("/users/country")
+    @GetMapping("/country")
     @ResponseStatus(HttpStatus.OK)
     public Page<EmployeeResponseDto> findByCountry(@RequestParam(required = false) String country,
                                                    @RequestParam(defaultValue = "0") int page,
@@ -126,7 +126,7 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @GetMapping("/users/countryBy")
+    @GetMapping("/countryBy")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getByCountry(@RequestParam String country) {
         List<Employee> employees = employeeService.findAllByCountry(country);
@@ -134,7 +134,7 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @GetMapping("/users/email/n")
+    @GetMapping("/email/n")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllByEmailNull() {
         List<Employee> employees = employeeService.findAllByEmailNull();
@@ -142,7 +142,7 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @GetMapping("/users/country/lc")
+    @GetMapping("/country/lc")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> updateAllByCountryFirstCharLowerToUpper() {
         List<Employee> employees = employeeService.updateAllByCountryFirstCharLowerToUpper();
@@ -150,21 +150,21 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @GetMapping("/users/c")
+    @GetMapping("/c")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getAllUsersC() {
         return employeeService.getAllEmployeeCountry();
     }
 
     @Override
-    @GetMapping("/users/s")
+    @GetMapping("/s")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getAllUsersSort() {
         return employeeService.getSortCountry();
     }
 
     @Override
-    @GetMapping("/users/country/notin")
+    @GetMapping("/country/notin")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllByCountryNotIn(@RequestParam List<String> countries) {
         List<Employee> employees = employeeService.findAllByCountryNotIn(countries);
@@ -172,25 +172,32 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     }
 
     @Override
-    @GetMapping("/users/deleted/ids")
+    @GetMapping("/deleted/ids")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeResponseDto> getAllDeletedByIds(@RequestParam List<Integer> ids) {
         List<Employee> employees = employeeService.findAllDeletedByIds(ids);
         return employeeMapper.toEmployeeResponseList(employees);
     }
 
-    @PatchMapping("/users/{employeeId}/pass/{passId}")
+    @PatchMapping("/{employeeId}/pass/{passId}")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeResponseDto handPassport(@PathVariable Integer employeeId, @PathVariable Long passId) {
         Employee employeeWithPass = employeeService.handPassportToEmployee(employeeId, passId);
         return employeeMapper.toEmployeeResponse(employeeWithPass);
     }
 
-    @PatchMapping("/users/{employeeId}/pass")
+    @PatchMapping("/{employeeId}/pass")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeResponseDto handFreePassport(@PathVariable Integer employeeId) {
         Employee employeeWithPass = employeeService.handFreePassportToEmployee(employeeId);
         return employeeMapper.toEmployeeResponse(employeeWithPass);
+    }
+
+    @PatchMapping("/{employeeId}/workplaces/{workPlaceId}")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponseDto addWorkPlace(@PathVariable Integer employeeId, @PathVariable Long workPlaceId) {
+        Employee employeeWithPlace = employeeService.addWorkPlace(employeeId, workPlaceId);
+        return employeeMapper.toEmployeeResponse(employeeWithPlace);
     }
 
 

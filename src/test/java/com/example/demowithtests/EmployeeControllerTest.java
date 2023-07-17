@@ -71,7 +71,8 @@ class EmployeeControllerTest {
 
         EmployeeResponseDto response = new EmployeeResponseDto(
                 1, "Mike", "England", "mail@mail.com",
-                null, null, null, null, false);
+               null, null, null, null, null, false);
+
 
         Employee employee = Employee.builder()
                 .id(1)
@@ -103,7 +104,8 @@ class EmployeeControllerTest {
 
         EmployeeResponseDto response = new EmployeeResponseDto(
                 1, "Mike",
-                null, null, null, null, null, null,false);
+                null, null, null, null, null, null, null, false);
+
 
         Employee employee = Employee.builder().id(1).name("Mike").build();
 
@@ -127,7 +129,8 @@ class EmployeeControllerTest {
 
         EmployeeResponseDto response = new EmployeeResponseDto(
                 1,
-                null, null, null, null, null, null, null, false);
+                null, null, null, null, null, null, null, null, false);
+
 
         Employee employee = Employee.builder().id(1).build();
 
@@ -199,11 +202,13 @@ class EmployeeControllerTest {
 
         EmployeeResponseDto responseDto1 = new EmployeeResponseDto(
                 1, "John", "US",
-                null, null, null, null, null,false);
+                null, null, null, null, null, null, false);
+
 
         EmployeeResponseDto responseDto2 = new EmployeeResponseDto(
                 2, "Jane", "UK",
-                null, null, null, null, null,false);
+                null, null, null, null, null, null, false);
+
 
         when(employeeService.getAllWithPagination(pageable)).thenReturn(employeesPage);
         when(employeeMapper.toEmployeeResponse(employee1)).thenReturn(responseDto1);
@@ -237,7 +242,7 @@ class EmployeeControllerTest {
 
         EmployeeResponseDto responseDto = new EmployeeResponseDto(
                 1, "John",
-                null, null, null, null, null, null, false);
+                null, null, null, null, null, null, null, false);
 
         List<EmployeeResponseDto> expectedResponse = List.of(responseDto);
 
@@ -264,7 +269,7 @@ class EmployeeControllerTest {
 
         EmployeeResponseDto responseDto1 = new EmployeeResponseDto(
                 1, "John", "US",
-                null, null, null, null, null, false);
+                null, null, null, null, null, null, false);
 
         List<EmployeeResponseDto> expectedResponse = List.of(responseDto1);
 
@@ -292,7 +297,7 @@ class EmployeeControllerTest {
 
         EmployeeResponseDto responseDto1 = new EmployeeResponseDto(
                 1, "name1", "A",
-                null, null, null, null, null, false);
+                null, null, null, null, null,  null, false);
 
         List<EmployeeResponseDto> expectedResponse = List.of(responseDto1);
 

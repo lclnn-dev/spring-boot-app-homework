@@ -1,6 +1,7 @@
 package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -65,4 +66,6 @@ public interface EmployeeService {
     Employee handPassportToEmployee(Integer employeeId, Long passId);
 
     Employee handFreePassportToEmployee(Integer employeeId);
+
+    Employee addWorkPlace(Integer employeeId, Long workPlaceId);
 }

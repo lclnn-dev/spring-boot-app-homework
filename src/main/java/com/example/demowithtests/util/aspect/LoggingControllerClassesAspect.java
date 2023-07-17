@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.annotation;
+package com.example.demowithtests.util.aspect;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
