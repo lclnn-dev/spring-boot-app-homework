@@ -2,7 +2,7 @@ package com.example.demowithtests.util;
 
 import com.example.demowithtests.domain.EmployeeWorkplace;
 import com.example.demowithtests.service.impl.EmployeeWorkPlaceServiceBean;
-import com.example.demowithtests.util.constant.WorkPlaceConstants;
+import com.example.demowithtests.constant.WorkPlaceConstants;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

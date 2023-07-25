@@ -1,10 +1,11 @@
 package com.example.demowithtests.service.impl;
 
+import com.example.demowithtests.constant.WorkPlaceConstants;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.EmployeeWorkplace;
 import com.example.demowithtests.domain.WorkPass;
 import com.example.demowithtests.domain.WorkPlace;
-import com.example.demowithtests.util.repository.EmployeeRepository;
+import com.example.demowithtests.repository.EmployeeRepository;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.service.EmployeeWorkPlaceService;
 import com.example.demowithtests.service.WorkPassService;
@@ -12,7 +13,6 @@ import com.example.demowithtests.service.WorkPlaceService;
 import com.example.demowithtests.util.annotation.entity.ActivateCustomAnnotations;
 import com.example.demowithtests.util.annotation.entity.Name;
 import com.example.demowithtests.util.annotation.entity.ToLowerCase;
-import com.example.demowithtests.util.constant.WorkPlaceConstants;
 import com.example.demowithtests.util.exception.DataAlreadyExistsException;
 import com.example.demowithtests.util.exception.NoResultsFoundException;
 import com.example.demowithtests.util.exception.ResourceDeleteStatusException;
@@ -43,7 +43,6 @@ public class EmployeeServiceBean implements EmployeeService {
     private final WorkPassService passService;
     private final WorkPlaceService workPlaceService;
     private final EmployeeWorkPlaceService activityService;
-
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -211,7 +210,7 @@ public class EmployeeServiceBean implements EmployeeService {
     }
 
     @Override
-    public Employee handPassportToEmployee(Integer employeeId, Long passId) {
+    public Employee handPassToEmployee(Integer employeeId, Long passId) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException(Employee.class, "id", employeeId.toString()));
 
@@ -220,13 +219,13 @@ public class EmployeeServiceBean implements EmployeeService {
         }
 
         WorkPass pass = passService.getById(passId);
-        handlePassport(employee, pass);
+        handlePass(employee, pass);
 
         return employeeRepository.save(employee);
     }
 
     @Override
-    public Employee handFreePassportToEmployee(Integer employeeId) {
+    public Employee handFreePassToEmployee(Integer employeeId) {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException(Employee.class, "id", employeeId.toString()));
 
@@ -235,14 +234,18 @@ public class EmployeeServiceBean implements EmployeeService {
         }
 
         WorkPass pass = passService.getFirstFreePass();
-        handlePassport(employee, pass);
+        handlePass(employee, pass);
 
         return employeeRepository.save(employee);
     }
 
-    private void handlePassport(Employee employee, WorkPass pass) {
-        if (pass.getIsHanded()) {
+    private void handlePass(Employee employee, WorkPass pass) {
+        if (Boolean.TRUE.equals(pass.getIsHanded())) {
             throw new DataAlreadyExistsException("Pass is already handed");
+        }
+
+        if (pass.getPrevEmployeeId() != null || pass.getCancelDate() != null) {
+            throw new DataAlreadyExistsException("Pass has been cancelled. It cannot be used again.");
         }
 
         LocalDateTime createDate = LocalDateTime.now();
@@ -251,6 +254,20 @@ public class EmployeeServiceBean implements EmployeeService {
         pass.setIsHanded(true);
         passService.updateById(pass.getId(), pass);
         employee.setWorkPass(pass);
+    }
+
+    public Employee cancelPassFromEmployee(Integer employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException(Employee.class, "id", employeeId.toString()));
+
+        WorkPass currentPass = employee.getWorkPass();
+        currentPass.setPrevEmployeeId(employeeId);
+        currentPass.setIsHanded(false);
+        currentPass.setCancelDate(LocalDateTime.now());
+        passService.updateById(currentPass.getId(), currentPass);
+
+        employee.setWorkPass(null);
+        return employeeRepository.save(employee);
     }
 
     @Override

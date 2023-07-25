@@ -1,6 +1,6 @@
 package com.example.demowithtests.util.aspect;
 
-import com.example.demowithtests.util.constant.LogColorConstants;
+import com.example.demowithtests.constant.LogColorConstants;
 import com.example.demowithtests.util.exception.ErrorDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;

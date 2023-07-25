@@ -19,6 +19,11 @@ public record WorkPassResponseDto(
         Boolean isDeleted,
         Boolean isHanded,
 
+        Integer prevEmployeeId,
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        LocalDateTime cancelDate,
+
         @Schema(description = "Employee Id")
         Long employeeId) {
 }

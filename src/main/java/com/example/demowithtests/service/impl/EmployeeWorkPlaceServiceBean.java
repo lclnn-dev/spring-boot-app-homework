@@ -3,7 +3,7 @@ package com.example.demowithtests.service.impl;
 import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.domain.EmployeeWorkplace;
 import com.example.demowithtests.domain.WorkPlace;
-import com.example.demowithtests.util.repository.EmployeeWorkplaceRepository;
+import com.example.demowithtests.repository.EmployeeWorkplaceRepository;
 import com.example.demowithtests.service.EmployeeWorkPlaceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

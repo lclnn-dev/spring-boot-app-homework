@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.repository;
+package com.example.demowithtests.repository;
 
 import com.example.demowithtests.domain.Employee;
 import jakarta.validation.constraints.NotNull;

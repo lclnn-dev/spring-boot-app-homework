@@ -4,6 +4,7 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.request.EmployeeRequestDto;
 import com.example.demowithtests.dto.request.EmployeeUpdateRequestDto;
 import com.example.demowithtests.dto.response.EmployeeResponseDto;
+import com.example.demowithtests.dto.response.WorkPassResponseDto;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.util.mapper.EmployeeMapper;
 import com.example.demowithtests.web.controller.EmployeeController;
@@ -182,15 +183,22 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
     @PatchMapping("/{employeeId}/pass/{passId}")
     @ResponseStatus(HttpStatus.OK)
     public EmployeeResponseDto handPassport(@PathVariable Integer employeeId, @PathVariable Long passId) {
-        Employee employeeWithPass = employeeService.handPassportToEmployee(employeeId, passId);
+        Employee employeeWithPass = employeeService.handPassToEmployee(employeeId, passId);
         return employeeMapper.toEmployeeResponse(employeeWithPass);
     }
 
     @PatchMapping("/{employeeId}/pass")
     @ResponseStatus(HttpStatus.OK)
-    public EmployeeResponseDto handFreePassport(@PathVariable Integer employeeId) {
-        Employee employeeWithPass = employeeService.handFreePassportToEmployee(employeeId);
+    public EmployeeResponseDto handFreePass(@PathVariable Integer employeeId) {
+        Employee employeeWithPass = employeeService.handFreePassToEmployee(employeeId);
         return employeeMapper.toEmployeeResponse(employeeWithPass);
+    }
+
+    @PatchMapping("/{employeeId}/cancel-pass")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponseDto cancelWorkPass(@PathVariable Integer employeeId) {
+        Employee employeeWithoutPass = employeeService.cancelPassFromEmployee(employeeId);
+        return employeeMapper.toEmployeeResponse(employeeWithoutPass);
     }
 
     @PatchMapping("/{employeeId}/workplaces/{workPlaceId}")

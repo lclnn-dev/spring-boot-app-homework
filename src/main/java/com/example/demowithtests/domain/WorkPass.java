@@ -9,9 +9,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +25,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Audited
+@AuditTable(value = "workpasses_history")
 public class WorkPass {
 
     @Id
@@ -33,6 +40,9 @@ public class WorkPass {
     @Column(name = "expire_date")
     private LocalDateTime expireDate;
 
+    @Column(name = "cancel_date")
+    private LocalDateTime cancelDate;
+
     @Column(name = "is_deleted")
     private Boolean isDeleted = Boolean.FALSE;
 
@@ -44,5 +54,9 @@ public class WorkPass {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_id", referencedColumnName = "id")
+    @NotAudited
     private PhotoPass photo;
+
+    @Column(name = "prev_employee_id")
+    private Integer prevEmployeeId;
 }

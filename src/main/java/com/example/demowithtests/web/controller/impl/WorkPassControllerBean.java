@@ -57,4 +57,12 @@ public class WorkPassControllerBean implements WorkPassController, WorkPassContr
         passService.addPhotoToWorkPass(passId, file);
         return ResponseEntity.ok("Photo added to WorkPass successfully");
     }
+
+    @Override
+    @GetMapping("/old-passes/{employeeId}")
+    public List<WorkPassResponseDto> getAllOldPassesEmployee(@PathVariable Integer employeeId) {
+        List<WorkPass> workPasses = passService.getAllOldPassesEmployee(employeeId);
+        return passMapper.toWorkPassResponseList(workPasses);
+
+    }
 }

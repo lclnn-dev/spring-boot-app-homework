@@ -1,7 +1,7 @@
 package com.example.demowithtests.service.impl;
 
 import com.example.demowithtests.domain.PhotoPass;
-import com.example.demowithtests.util.repository.PhotoPassRepository;
+import com.example.demowithtests.repository.PhotoPassRepository;
 import com.example.demowithtests.service.FileStorageService;
 import com.example.demowithtests.service.PhotoPassService;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;

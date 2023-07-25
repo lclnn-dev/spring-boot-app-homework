@@ -1,4 +1,4 @@
-package com.example.demowithtests.util.constant;
+package com.example.demowithtests.constant;
 
 public class WorkPlaceConstants {
 

@@ -18,4 +18,6 @@ public interface WorkPassService {
     WorkPass getFirstFreePass();
 
     void addPhotoToWorkPass(Long passId, MultipartFile file);
+
+    List<WorkPass> getAllOldPassesEmployee(Integer employeeId);
 }

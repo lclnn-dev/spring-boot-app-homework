@@ -1,7 +1,6 @@
 package com.example.demowithtests.service;
 
 import com.example.demowithtests.domain.Employee;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -63,9 +62,11 @@ public interface EmployeeService {
 
     List<Employee> findAllDeletedByIds(List<Integer> ids);
 
-    Employee handPassportToEmployee(Integer employeeId, Long passId);
+    Employee handPassToEmployee(Integer employeeId, Long passId);
 
-    Employee handFreePassportToEmployee(Integer employeeId);
+    Employee cancelPassFromEmployee(Integer employeeId);
+
+    Employee handFreePassToEmployee(Integer employeeId);
 
     Employee addWorkPlace(Integer employeeId, Long workPlaceId);
 }

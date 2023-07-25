@@ -14,5 +14,7 @@ public interface WorkPassController {
 
     WorkPassResponseDto addWorkPass(WorkPassRequestDto passRequest);
 
+    List<WorkPassResponseDto> getAllOldPassesEmployee(Integer employeeId);
+
     ResponseEntity<String> addPhotoToWorkPass(Long passId, MultipartFile file);
 }

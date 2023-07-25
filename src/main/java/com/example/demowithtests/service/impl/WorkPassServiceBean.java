@@ -2,7 +2,7 @@ package com.example.demowithtests.service.impl;
 
 import com.example.demowithtests.domain.PhotoPass;
 import com.example.demowithtests.domain.WorkPass;
-import com.example.demowithtests.util.repository.WorkPassRepository;
+import com.example.demowithtests.repository.WorkPassRepository;
 import com.example.demowithtests.service.FileStorageService;
 import com.example.demowithtests.service.WorkPassService;
 import com.example.demowithtests.util.config.PhotoPassConfig;
@@ -69,6 +69,14 @@ public class WorkPassServiceBean implements WorkPassService {
             existingPass.setExpireDate(pass.getExpireDate());
             isUpdated = true;
         }
+        if (pass.getCancelDate() != null && !pass.getCancelDate().equals(existingPass.getCancelDate())) {
+            existingPass.setCancelDate(pass.getCancelDate());
+            isUpdated = true;
+        }
+        if (pass.getPrevEmployeeId() != null && !pass.getPrevEmployeeId().equals(existingPass.getPrevEmployeeId())) {
+            existingPass.setPrevEmployeeId(pass.getPrevEmployeeId());
+            isUpdated = true;
+        }
 
         if (isUpdated) {
             return passRepository.save(existingPass);
@@ -113,4 +121,12 @@ public class WorkPassServiceBean implements WorkPassService {
         workPass.setPhoto(photo);
         passRepository.save(workPass);
     }
+
+    @Override
+    public List<WorkPass> getAllOldPassesEmployee(Integer employeeId) {
+        return passRepository.findAllByPrevEmployeeId(employeeId);
+    }
+
+
 }
+

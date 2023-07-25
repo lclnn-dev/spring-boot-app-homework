@@ -1,7 +1,7 @@
 package com.example.demowithtests.util.aspect;
 
 import com.example.demowithtests.domain.EmployeeWorkplace;
-import com.example.demowithtests.util.constant.LogColorConstants;
+import com.example.demowithtests.constant.LogColorConstants;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
