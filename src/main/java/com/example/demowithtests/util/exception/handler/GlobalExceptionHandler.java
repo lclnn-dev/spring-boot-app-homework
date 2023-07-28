@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -87,6 +88,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST);
         errorDetails.setPath(request.getDescription(false));
         errorDetails.setMessage("Invalid arguments: " + ex.getMessage());
+
+        return buildErrorResponse(errorDetails);
+    }
+
+    @ExceptionHandler(JpaSystemException.class)
+    public ResponseEntity<Object> handleJpaSystemException(JpaSystemException ex, WebRequest request) {
+        Throwable rootCause = ex.getRootCause();
+        String errorMessage = "A database error has occurred.";
+
+        if (rootCause != null) {
+            errorMessage = "A database error has occurred: " + rootCause.getMessage();
+        }
+
+        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST);
+        errorDetails.setPath(request.getDescription(false));
+        errorDetails.setMessage("Invalid arguments: " + ex.getMessage());
+        errorDetails.setDetails(errorMessage);
 
         return buildErrorResponse(errorDetails);
     }
