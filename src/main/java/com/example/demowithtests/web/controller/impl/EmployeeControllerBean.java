@@ -4,7 +4,6 @@ import com.example.demowithtests.domain.Employee;
 import com.example.demowithtests.dto.request.EmployeeRequestDto;
 import com.example.demowithtests.dto.request.EmployeeUpdateRequestDto;
 import com.example.demowithtests.dto.response.EmployeeResponseDto;
-import com.example.demowithtests.dto.response.WorkPassResponseDto;
 import com.example.demowithtests.service.EmployeeService;
 import com.example.demowithtests.util.mapper.EmployeeMapper;
 import com.example.demowithtests.web.controller.EmployeeController;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -207,4 +207,12 @@ public class EmployeeControllerBean implements EmployeeController, EmployeeContr
         Employee employeeWithPlace = employeeService.addWorkPlace(employeeId, workPlaceId);
         return employeeMapper.toEmployeeResponse(employeeWithPlace);
     }
+
+    @Override
+    @GetMapping("/countries/list")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<String> getSetCountries() {
+        return employeeService.findAllCountriesEM();
+    }
+
 }

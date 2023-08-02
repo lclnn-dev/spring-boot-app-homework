@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EmployeeController {
 
@@ -43,4 +44,6 @@ public interface EmployeeController {
     List<EmployeeResponseDto> getAllByCountryNotIn(List<String> countries);
 
     List<EmployeeResponseDto> getAllDeletedByIds(List<Integer> ids);
+
+    Set<String> getSetCountries();
 }

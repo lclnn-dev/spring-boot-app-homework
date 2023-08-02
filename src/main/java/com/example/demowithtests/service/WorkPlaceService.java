@@ -11,4 +11,6 @@ public interface WorkPlaceService {
     WorkPlace updateById(Long id, WorkPlace workPlace);
 
     void deleteById(Long id);
+
+    void deleteByIdEM(Long id);
 }

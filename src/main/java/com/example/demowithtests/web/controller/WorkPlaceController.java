@@ -13,4 +13,6 @@ public interface WorkPlaceController {
     WorkPlaceResponseDto updateById(Long id, WorkPlaceRequestDto requestDto);
 
     void deleteById(Long id);
+
+    void deleteByIdEM(Long id);
 }

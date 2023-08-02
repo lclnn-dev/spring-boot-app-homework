@@ -15,6 +15,8 @@ public interface WorkPassService {
 
     WorkPass updateById(Long passId, WorkPass pass);
 
+    WorkPass updateExpireDateEM(Long passId, WorkPass pass);
+
     WorkPass getFirstFreePass();
 
     void addPhotoToWorkPass(Long passId, MultipartFile file);

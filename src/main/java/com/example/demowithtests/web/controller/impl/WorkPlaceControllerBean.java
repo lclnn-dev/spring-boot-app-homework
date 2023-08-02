@@ -68,4 +68,11 @@ public class WorkPlaceControllerBean implements WorkPlaceController, WorkPlaceCo
     public void deleteById(@PathVariable Long id) {
         workPlaceService.deleteById(id);
     }
+
+    @Override
+    @DeleteMapping("/em/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByIdEM(@PathVariable Long id) {
+        workPlaceService.deleteByIdEM(id);
+    }
 }

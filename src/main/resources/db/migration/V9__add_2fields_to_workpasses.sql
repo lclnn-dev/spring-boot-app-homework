@@ -1,0 +1,3 @@
+ALTER TABLE workpasses
+    ADD COLUMN IF NOT EXISTS prev_employee_id INTEGER,
+    ADD COLUMN IF NOT EXISTS cancel_date      TIMESTAMP WITHOUT TIME ZONE;

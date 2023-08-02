@@ -10,8 +10,11 @@ import com.example.demowithtests.util.exception.DataAlreadyExistsException;
 import com.example.demowithtests.util.exception.NoResultsFoundException;
 import com.example.demowithtests.util.exception.ResourceNotFoundException;
 import com.example.demowithtests.util.exception.ResourceWasDeletedException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Comparator;
@@ -24,6 +27,9 @@ public class WorkPassServiceBean implements WorkPassService {
     private final WorkPassRepository passRepository;
     private final FileStorageService fileStorageService;
     private final PhotoPassConfig photoPassConfig;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<WorkPass> getAll() {
@@ -84,6 +90,18 @@ public class WorkPassServiceBean implements WorkPassService {
             return existingPass;
         }
 
+    }
+
+    @Transactional
+    public WorkPass updateExpireDateEM(Long passId, WorkPass pass) {
+        WorkPass existingPass = entityManager.find(WorkPass.class, passId);
+
+        if (existingPass == null) {
+            throw new ResourceNotFoundException(WorkPass.class, "id", passId.toString());
+        }
+        existingPass.setExpireDate(pass.getExpireDate());
+
+        return entityManager.merge(existingPass);
     }
 
     @Override

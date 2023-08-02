@@ -21,12 +21,14 @@ import com.example.demowithtests.util.exception.ResourceWasDeletedException;
 import com.example.demowithtests.util.exception.WorkPlaceException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -135,6 +138,7 @@ public class EmployeeServiceBean implements EmployeeService {
     public List<Employee> findAllByCountry(String country) {
         return employeeRepository.findAllByCountry(country);
     }
+
 
     @Override
     public Page<Employee> findByCountryContaining(String country, int page, int size, List<String> sortList, String sortOrder) {
@@ -268,6 +272,14 @@ public class EmployeeServiceBean implements EmployeeService {
 
         employee.setWorkPass(null);
         return employeeRepository.save(employee);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Set<String> findAllCountriesEM() {
+        return entityManager.createQuery("select distinct country from Employee", String.class)
+                .getResultStream()
+                .collect(Collectors.toSet());
     }
 
     @Override

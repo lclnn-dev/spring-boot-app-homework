@@ -1,8 +1,11 @@
 package com.example.demowithtests.web.controller.impl;
 
 import com.example.demowithtests.domain.WorkPass;
+import com.example.demowithtests.domain.WorkPlace;
 import com.example.demowithtests.dto.request.WorkPassRequestDto;
+import com.example.demowithtests.dto.request.WorkPlaceRequestDto;
 import com.example.demowithtests.dto.response.WorkPassResponseDto;
+import com.example.demowithtests.dto.response.WorkPlaceResponseDto;
 import com.example.demowithtests.service.WorkPassService;
 import com.example.demowithtests.util.mapper.WorkPassMapper;
 import com.example.demowithtests.web.controller.WorkPassController;
@@ -11,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,6 +67,15 @@ public class WorkPassControllerBean implements WorkPassController, WorkPassContr
     public List<WorkPassResponseDto> getAllOldPassesEmployee(@PathVariable Integer employeeId) {
         List<WorkPass> workPasses = passService.getAllOldPassesEmployee(employeeId);
         return passMapper.toWorkPassResponseList(workPasses);
+    }
 
+//    @Override
+    @PatchMapping("/em/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public WorkPassResponseDto updatePassEM(@PathVariable("id") Long id,@RequestBody WorkPassRequestDto workPassRequest) {
+        WorkPass workPassEntity = passMapper.toWorkPassEntity(workPassRequest);
+        WorkPass updatedWorkPassEntity = passService.updateExpireDateEM(id, workPassEntity);
+
+        return passMapper.toWorkPassResponse(updatedWorkPassEntity);
     }
 }

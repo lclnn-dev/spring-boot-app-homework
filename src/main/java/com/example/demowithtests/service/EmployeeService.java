@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EmployeeService {
 
@@ -69,4 +70,6 @@ public interface EmployeeService {
     Employee handFreePassToEmployee(Integer employeeId);
 
     Employee addWorkPlace(Integer employeeId, Long workPlaceId);
+
+    Set<String> findAllCountriesEM();
 }
