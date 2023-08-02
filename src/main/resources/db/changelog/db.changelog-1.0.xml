@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.10.xsd">
+
+    <include file="db/changelog/migration/V1_init.xml"/>
+    <include file="db/changelog/migration/V2_add_field_is_deleted_to_users.xml"/>
+    <include file="db/changelog/migration/V3_add_table_addresses.yml"/>
+    <include file="db/changelog/migration/V4_add_field_gender_to_users.yml"/>
+    <include file="db/changelog/migration/V5_add_table_workpass.xml"/>
+    <include file="db/changelog/migration/V6_add_fkey_workpass_to_users.xml"/>
+    <include file="db/changelog/migration/V7_add_table_photopass.xml"/>
+    <include file="db/changelog/migration/V8_add_fkey_photo_to_workpasses.xml"/>
+    <include file="db/changelog/migration/V9_add_2fields_to_workpasses.xml"/>
+    <include file="db/changelog/migration/V10_add_field_is_deleted_to_workplaces.xml"/>
+
+</databaseChangeLog>

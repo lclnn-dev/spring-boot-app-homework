@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: createTableAddresses
+      author: Olha
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: addresses
+      changes:
+        - createTable:
+            tableName: addresses
+            columns:
+              - column:
+                  name: id
+                  type: big-serial
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: address_has_active
+                  type: boolean
+              - column:
+                  name: city
+                  type: varchar(255)
+              - column:
+                  name: country
+                  type: varchar(255)
+              - column:
+                  name: street
+                  type: varchar(255)
+              - column:
+                  name: employee_id
+                  type: integer
+            constraints:
+              - foreignKey:
+                  baseTableName: addresses
+                  baseColumnNames: employee_id
+                  referencedTableName: users
+                  referencedColumnNames: id

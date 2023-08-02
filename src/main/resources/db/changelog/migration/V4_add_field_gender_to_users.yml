@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: addColumnGenderToUsers
+      author: Olha
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: users
+            columnName: gender
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: gender
+                  type: varchar(255)
